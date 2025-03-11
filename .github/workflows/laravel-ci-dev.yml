@@ -16,10 +16,11 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
-          MYSQL_USER: ${{ secrets.DB_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: asrama_ci
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+
         ports:
           - 3306:3306
         options: >-
@@ -62,9 +63,9 @@ jobs:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: asrama_ci
+          DB_USERNAME: user
+          DB_PASSWORD: password
 
       - name: Run tests
         run: php artisan test
