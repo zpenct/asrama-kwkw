@@ -31,6 +31,10 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label('Masukkan Email')
                     ->required(),
+                Forms\Components\Select::make('roles')
+                    ->label('Masukkan Role')
+                    ->relationship('roles', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('password')
                     ->label('Password')
                     ->required()
@@ -43,6 +47,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
+                Tables\Columns\TextColumn::make('roles.name')->label('Role user')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
             ])
             ->filters([
