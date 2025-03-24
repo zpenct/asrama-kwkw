@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', 'Home')
 
-    <title>Laravel</title>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class="font-sans antialiased">
+@section('content')
     <main class="mt-20 mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div class="grid grid-cols-3 gap-10">
             @foreach ($buildings as $building)
@@ -27,8 +19,4 @@
             @endforeach
         </div>
     </main>
-
-
-</body>
-
-</html>
+@endsection
