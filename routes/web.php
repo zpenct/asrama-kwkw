@@ -5,25 +5,16 @@ use Illuminate\Http\Request;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RedirectLogin;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BuildingController;
 
-
 Route::get('/', [WelcomeController::class, 'index']);
 
-// Route::get('/redirect', fn () => null)->middleware(['auth', RedirectLogin::class]);
-
-// Route::get('/login', function () {
-//     if (request()->is('admin*')) {
-//         return redirect(Filament::getPanel('admin')->getLoginUrl());
-//     }
-
-//     return redirect(Filament::getPanel('user')->getLoginUrl());
-// })->name('login');
-
+Route::get('/login', function () {
+    return redirect(Filament::getPanel('admin')->getLoginUrl());
+})->name('login');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/buildings/{id}', [BuildingController::class, 'show'])->name('buildings.show');
