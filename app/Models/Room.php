@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Floor;
+use App\Models\Booking;
 use App\Models\Building;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,5 +23,10 @@ class Room extends Model
     public function floor()
     {
         return $this->belongsTo(Floor::class, 'floor_id');
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }
