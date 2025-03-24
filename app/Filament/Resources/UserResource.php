@@ -105,13 +105,13 @@ class UserResource extends Resource
             ->actions([
                 // Tables\Actions\EditAction::make(),
             ]);
-            // ->bulkActions(
-            //     $user->role == 'MAHASISWA' ? [] : [
-            //         Tables\Actions\BulkActionGroup::make([
-            //             Tables\Actions\DeleteBulkAction::make(),
-            //         ]),
-            //     ]
-            // ); // ROLE 2 (MAHASISWA) CAN'T DELETE USER
+        // ->bulkActions(
+        //     $user->role == 'MAHASISWA' ? [] : [
+        //         Tables\Actions\BulkActionGroup::make([
+        //             Tables\Actions\DeleteBulkAction::make(),
+        //         ]),
+        //     ]
+        // ); // ROLE 2 (MAHASISWA) CAN'T DELETE USER
     }
 
     public static function canCreate(): bool
@@ -130,10 +130,25 @@ class UserResource extends Resource
         return $user && $user->role !== 'SUPERADMIN';
     }
 
+    public static function canViewAny(): bool
+    {
+        $user = Filament::auth()->user();
+
+        return $user && $user->role === 'SUPERADMIN';
+    }
+
     protected function getRedirectUrl(): string
     {
         return UserResource::getUrl('index');
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Filament::auth()->user();
+
+        return $user && $user->role === 'SUPERADMIN';
+    }
+
 
     public static function getPages(): array
     {
