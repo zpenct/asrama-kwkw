@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FacilityResource\Pages;
-use App\Filament\Resources\FacilityResource\RelationManagers;
-use App\Models\Facility;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Facility;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\FacilityResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\FacilityResource\RelationManagers;
 
 class FacilityResource extends Resource
 {
@@ -91,6 +92,19 @@ class FacilityResource extends Resource
         return FacilityResource::getUrl('index');
     }
 
+    public static function canCreate(): bool
+    {
+        $user = Auth::user();
 
-    
+        // ONLY SUPERADMIN AND ADMIN CAN CREATE FACILITY
+        return $user && $user->role !== "MAHASISWA";
+    }
+
+    public static function canDelete($record): bool
+    {
+        $user = Auth::user();
+
+        // ONLY SUPERADMIN AND ADMIN CAN DELETE FACILITY
+        return $user && $user->role !== "MAHASISWA";
+    }
 }

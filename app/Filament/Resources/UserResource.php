@@ -1,17 +1,22 @@
 <?php
-
+// app/Filament/Resources/UserResource.php
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Facades\Filament;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Checkbox;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\DeleteAction;
+use App\Filament\Resources\UserResource\Pages;
 
 class UserResource extends Resource
 {
@@ -23,46 +28,111 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $user = Auth::user();
+
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nama user')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->label('Masukkan Email')
-                    ->required(),
-                Forms\Components\TextInput::make('password')
-                    ->label('Password')
+                TextInput::make('name')
+                    ->label('Nama User')
                     ->required()
-                    ->placeholder('Masukkan Password'),
+                    ->maxLength(255),
+
+                TextInput::make('email')
+                    ->label('Masukkan Email')
+                    ->email()
+                    ->unique(User::class, 'email', ignoreRecord: true)
+                    ->required(),
+
+                TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->placeholder('Masukkan Password')
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => !empty($state) ? $state : null)
+                    ->required(fn($livewire) => $livewire instanceof Pages\CreateUser)
+                    ->nullable(),
+
+                // ONLY SUPERADMIN AND ADMIN CAN SEE THIS FIELD
+                Select::make('role')
+                    ->label('Role')
+                    ->options([
+                        'SUPERADMIN' => 'Superadmin',
+                        'ADMIN' => 'Admin',
+                        'MAHASISWA' => 'Mahasiswa',
+                    ])
+                    ->required()
+                    ->hidden(fn() => $user->role === 'MAHASISWA'), // ROLE 2 (MAHASISWA) CAN'T SEE THIS FIELD
+
+                Checkbox::make('is_first')
+                    ->label('Wajib Reset Password Saat Pertama Login'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+
+        $user = Auth::user();  // GET AUTHENTICATED USER
+
         return $table
+            ->query(
+                User::query()
+                    ->when($user->role === 'MAHASISWA', fn($query) => $query->where('id', $user->id)) // ROLE 2 (MAHASISWA) CAN ONLY SEE THEIR OWN ACCOUNT
+            )
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
-                Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama User')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Role')
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        'SUPERADMIN' => 'Superadmin',
+                        'ADMIN' => 'Admin',
+                        'MAHASISWA' => 'Mahasiswa',
+                    })
+                    ->badge(),
+                // Tables\Columns\IconColumn::make('is_first')
+                //     ->label('Reset Password?')
+                //     ->boolean(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\EditAction::make(),
             ]);
+            // ->bulkActions(
+            //     $user->role == 'MAHASISWA' ? [] : [
+            //         Tables\Actions\BulkActionGroup::make([
+            //             Tables\Actions\DeleteBulkAction::make(),
+            //         ]),
+            //     ]
+            // ); // ROLE 2 (MAHASISWA) CAN'T DELETE USER
     }
 
-    public static function getRelations(): array
+    public static function canCreate(): bool
     {
-        return [
-            //
-        ];
+        $user = Filament::auth()->user();
+
+        // ONLY SUPERADMIN AND ADMIN CAN CREATE USER
+        return $user && $user->role === 'SUPERADMIN';
+    }
+
+    public static function canDelete($record): bool
+    {
+        $user = Filament::auth()->user();
+
+        // ONLY SUPERADMIN AND ADMIN CAN DELETE USER
+        return $user && $user->role !== 'SUPERADMIN';
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return UserResource::getUrl('index');
     }
 
     public static function getPages(): array
@@ -70,7 +140,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

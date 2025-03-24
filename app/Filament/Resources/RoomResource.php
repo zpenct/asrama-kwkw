@@ -5,12 +5,13 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\Room;
 use Filament\Tables;
-use App\Models\Building;
 use App\Models\Floor;
+use App\Models\Building;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rule;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Actions\Action;
 use App\Filament\Resources\RoomResource\Pages;
 
@@ -187,6 +188,22 @@ class RoomResource extends Resource
   public static function getRelations(): array
   {
     return [];
+  }
+
+  public static function canCreate(): bool
+  {
+    $user = Auth::user();
+
+    // ONLY SUPERADMIN AND ADMIN CAN CREATE FACILITY
+    return $user && $user->role !== "MAHASISWA";
+  }
+
+  public static function canDelete($record): bool
+  {
+    $user = Auth::user();
+
+    // ONLY SUPERADMIN AND ADMIN CAN DELETE FACILITY
+    return $user && $user->role!== "MAHASISWA";
   }
 
   public static function getPages(): array

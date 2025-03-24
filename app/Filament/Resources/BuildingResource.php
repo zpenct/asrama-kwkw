@@ -8,6 +8,7 @@ use App\Models\Building;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use App\Filament\Resources\BuildingResource\Pages;
 
 class BuildingResource extends Resource
@@ -136,6 +137,24 @@ class BuildingResource extends Resource
 				\Filament\Tables\Actions\DeleteAction::make()
 			]);
 	}
+
+
+	public static function canCreate(): bool
+	{
+		$user = Auth::user();
+
+		// ONLY SUPERADMIN AND ADMIN CAN CREATE BUILDING
+		return $user && $user->role !== 'MAHASISWA';
+	}
+
+	public static function canDelete($record): bool
+	{
+		$user = Auth::user();
+
+		// ONLY SUPERADMIN AND ADMIN CAN DELETE BUILDING
+		return $user && $user->role !== 'MAHASISWA';
+	}
+
 
 	protected function getRedirectUrl(): string
 	{
