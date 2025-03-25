@@ -1,99 +1,219 @@
-@php
-    $room = $booking->room;
-    $floor = $room->floor;
-    $maxCapacity = $floor->max_capacity;
+@extends('layouts.app')
 
-    $usedGuests = \App\Models\Booking::where('room_id', $room->id)
-        ->where('status', 'booked')
-        ->where('id', '!=', $booking->id)
-        ->sum('total_guest');
+@section('content')
+    @php
+        use App\Models\Booking;
 
-    $totalGuest = old('total_guest', $booking->total_guest ?? 1);
+        $room = $booking->room;
+        $floor = $room->floor;
+        $maxCapacity = $floor->max_capacity;
 
-    $availableGuests = max($maxCapacity - $usedGuests, 0);
-    $max = $availableGuests + $booking->total_guest;
+        $usedGuests = Booking::where('room_id', $room->id)
+            ->where('status', 'booked')
+            ->where('id', '!=', $booking->id)
+            ->sum('total_guest');
 
-    $pricePerPersonPerYear = $floor->price;
+        $totalGuest = old('total_guest', $booking->total_guest ?? 1);
+        $availableGuests = max($maxCapacity - $usedGuests, 0);
+        $pricePerPersonPerYear = $floor->price;
 
-    $checkin = \Carbon\Carbon::parse($booking->checkin_date);
-    $checkout = \Carbon\Carbon::parse($booking->checkout_date);
-    $durationInYears = $checkin->floatDiffInRealYears($checkout);
+        $checkin = \Carbon\Carbon::parse($booking->checkin_date);
+        $checkout = \Carbon\Carbon::parse($booking->checkout_date);
+        $durationInYears = $checkin->floatDiffInRealYears($checkout);
+        $durationInMonths = $checkin->floatDiffInMonths($checkout);
 
-    $totalAmount = $pricePerPersonPerYear * $totalGuest * $durationInYears;
-@endphp
+        $totalAmount = $pricePerPersonPerYear * $totalGuest * $durationInYears;
 
-<!DOCTYPE html>
-<html lang="en">
+        $latestTransaction = $booking->transactions->last();
+        $transactionStatus = $latestTransaction->status ?? null;
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        $showGuestInput = !$latestTransaction || ($booking->status === 'pending' && $transactionStatus === 'expired');
 
-    <title>Building</title>
+        $hasActiveTransaction =
+            $latestTransaction && in_array($transactionStatus, ['waiting_payment', 'waiting_verification']);
+    @endphp
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-</head>
-
-<body>
-    <div class="max-w-2xl mx-auto p-6 bg-white border-blue-500 rounded-lg mt-10">
+    <div class="max-w-lg mx-auto mt-6 p-6 bg-white rounded-lg shadow-sm">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Booking Details</h2>
 
-        <div class="space-y-4">
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">Booking ID:</strong>
-                <span class="text-gray-900">{{ $booking->id }}</span>
+        <div class="space-y-3 mb-6">
+            <div class="flex justify-between">
+                <span class="text-gray-600">Booking ID</span>
+                <span class="font-medium">{{ $booking->id }}</span>
             </div>
 
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">Room Code:</strong>
-                <span class="text-gray-900">{{ $booking->room->code ?? '-' }}</span>
+            <div class="flex justify-between">
+                <span class="text-gray-600">Room Code</span>
+                <span class="font-medium">{{ $room->code ?? '-' }}</span>
             </div>
 
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">User:</strong>
-                <span class="text-gray-900">{{ $booking->user->name ?? 'Guest' }}</span>
+            <div class="flex justify-between">
+                <span class="text-gray-600">Requested By</span>
+                <span class="font-medium">{{ $booking->user->name ?? 'Guest' }}</span>
             </div>
 
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">Check-in Date:</strong>
-                <span class="text-gray-900">{{ \Carbon\Carbon::parse($booking->checkin_date)->format('d M Y') }}</span>
+            <div class="flex justify-between">
+                <span class="text-gray-600">Check-in Date</span>
+                <span class="font-medium">{{ $checkin->format('d M Y') }}</span>
             </div>
 
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">Check-out Date:</strong>
-                <span class="text-gray-900">{{ \Carbon\Carbon::parse($booking->checkout_date)->format('d M Y') }}</span>
+            <div class="flex justify-between">
+                <span class="text-gray-600">Check-out Date</span>
+                <span class="font-medium">{{ $checkout->format('d M Y') }}</span>
             </div>
 
-            <div class="flex justify-between border-b pb-2">
-                <strong class="text-gray-700">Created At:</strong>
-                <span class="text-gray-900">{{ $booking->created_at->format('d M Y H:i') }}</span>
+            <div class="flex justify-between">
+                <span class="text-gray-600">Booking Status</span>
+                <span class="capitalize font-medium">{{ $booking->status }}</span>
             </div>
 
-            <div class="mt-6">
+            <div class="flex justify-between">
+                <span class="text-gray-600">Transaction Status</span>
+                <span class="capitalize font-medium">{{ str_replace('_', ' ', $transactionStatus) ?? '-' }}</span>
+            </div>
+        </div>
+
+        {{-- Total Guest Form or Text --}}
+        <div class="mt-6 border-t pt-6">
+            @if ($showGuestInput)
                 <form action="{{ route('booking.update', $booking->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <label for="total_guest" class="block text-sm font-medium text-gray-700">Total Guest</label>
-                    <input type="number" id="total_guest" name="total_guest" value="{{ $totalGuest }}" min="1"
-                        max="{{ $availableGuests }}"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    <p class="mt-2 text-sm text-gray-500">Maksimal tamu yang bisa ditambahkan: {{ $availableGuests }}
-                    </p>
+                    <div class="mb-4">
+                        <label for="total_guest" class="block text-sm font-medium text-gray-700 mb-1">Total Guest</label>
+                        <input type="number" id="total_guest" name="total_guest" value="{{ $totalGuest }}" min="1"
+                            max="{{ $availableGuests }}"
+                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                            data-price="{{ $pricePerPersonPerYear }}" data-duration="{{ $durationInYears }}">
+                        <p class="mt-1 text-xs text-gray-500">Available capacity: {{ $availableGuests }} guests</p>
+                    </div>
 
-                    <h2 class="text-xl font-bold text-blue-500 mt-6">Total Amount:
-                        Rp{{ number_format($totalAmount, 0, ',', '.') }}</h2>
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <h3 class="font-medium text-gray-700 mb-3">Price Calculation</h3>
 
-                    <button type="submit"
-                        class="mt-6 w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Next
-                    </button>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Price per person/year</span>
+                                <span>Rp{{ number_format($pricePerPersonPerYear, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Duration</span>
+                                <span>{{ round($durationInMonths, 1) }} months</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Number of guests</span>
+                                <span id="guest_count">{{ $totalGuest }}</span>
+                            </div>
+                            <div class="border-t border-gray-200 my-2"></div>
+                            <div class="flex justify-between font-medium">
+                                <span class="text-gray-700">Total Amount</span>
+                                <span class="text-blue-600">
+                                    Rp<span id="total_amount">{{ number_format($totalAmount, 0, ',', '.') }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ($booking->status === 'pending' && !$hasActiveTransaction)
+                        <button type="submit" id="proceed-payment-btn"
+                            class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Proceed to Payment
+                        </button>
+                    @endif
                 </form>
-            </div>
+            @else
+                <div class="space-y-4">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Total Guest</span>
+                        <span class="font-medium">{{ $booking->total_guest }}</span>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-medium text-gray-700 mb-3">Price Breakdown</h3>
+
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Price per person/year</span>
+                                <span>Rp{{ number_format($pricePerPersonPerYear, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Duration</span>
+                                <span>{{ round($durationInMonths, 1) }} months</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Number of guests</span>
+                                <span>{{ $booking->total_guest }}</span>
+                            </div>
+                            <div class="border-t border-gray-200 my-2"></div>
+                            <div class="flex justify-between font-medium">
+                                <span class="text-gray-700">Total Amount</span>
+                                <span class="text-blue-600">
+                                    Rp{{ number_format($booking->total_guest * $pricePerPersonPerYear * $durationInYears, 0, ',', '.') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ($hasActiveTransaction)
+                        <a href="{{ route('transactions.upload', $latestTransaction->id) }}"
+                            class="block text-center py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4">
+                            View Transaction Details
+                        </a>
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
 
-</body>
+    {{-- Script untuk hitung ulang Total Amount --}}
+    @if ($showGuestInput)
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const guestInput = document.getElementById('total_guest');
+                const totalAmountSpan = document.getElementById('total_amount');
+                const guestCountSpan = document.getElementById('guest_count');
 
-</html>
+                function updateAmount() {
+                    const guest = parseInt(guestInput.value) || 0;
+                    const price = parseFloat(guestInput.dataset.price);
+                    const duration = parseFloat(guestInput.dataset.duration);
+                    const total = Math.round(price * guest * duration);
+
+                    totalAmountSpan.textContent = total.toLocaleString('id-ID');
+                    guestCountSpan.textContent = guest;
+                }
+
+                guestInput.addEventListener('input', updateAmount);
+                updateAmount();
+            });
+        </script>
+    @endif
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const proceedBtn = document.getElementById("proceed-payment-btn");
+            const parentForm = proceedBtn?.closest('form');
+
+            if (proceedBtn && parentForm) {
+                proceedBtn.addEventListener("click", function() {
+                    if (proceedBtn.disabled) return;
+
+                    // Disable tombol & ubah isi
+                    proceedBtn.disabled = true;
+                    proceedBtn.textContent = "Processing...";
+                    proceedBtn.classList.add("opacity-70", "cursor-wait");
+                    proceedBtn.innerHTML = `<svg class="animate-spin w-4 h-4 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg> Processing...`;
+
+
+                    // Submit form secara manual
+                    parentForm.submit();
+                });
+            }
+        });
+    </script>
+
+@endsection

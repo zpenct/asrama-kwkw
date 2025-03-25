@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -21,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
     Route::put('/booking/{booking}', [BookingController::class, 'update'])->name('booking.update');
+    Route::get('/transactions/{transaction}/upload', [TransactionController::class, 'upload'])->name('transactions.upload');
+    Route::post('/transactions/{transaction}/upload', [TransactionController::class, 'submitUpload'])->name('transactions.submit_upload');
 
     // Route lainnya yang harus login
 });

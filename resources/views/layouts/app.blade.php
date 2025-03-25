@@ -9,11 +9,12 @@
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js" defer></script>
 </head>
 
-<body class="">
+<body class="bg-gray-50">
     <x-navbar />
 
 
     @yield('content')
+    @yield('scripts')
 
 </body>
 

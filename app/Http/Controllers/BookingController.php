@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -64,11 +66,28 @@ class BookingController extends Controller
             'total_guest' => "required|integer|min:1|max:$maxAvailable",
         ]);
 
+        // Hitung ulang total amount
+        $checkin = Carbon::parse($booking->checkin_date);
+        $checkout = Carbon::parse($booking->checkout_date);
+        $durationInYears = $checkin->floatDiffInRealYears($checkout);
+        $totalAmount = $floor->price * $validated['total_guest'] * $durationInYears;
+
         $booking->update([
             'total_guest' => $validated['total_guest'],
         ]);
 
-        return redirect()->back()->with('success', 'Booking updated.');
+        // Buat transaction baru
+        $transaction = Transaction::create([
+            'id' => Str::uuid(),
+            'booking_id' => $booking->id,
+            'amount' => $totalAmount,
+            'status' => 'waiting_payment',
+            'expired_at' => now()->addHours(24),
+        ]);
+
+        // Redirect ke halaman upload bukti pembayaran (buat route-nya ya)
+        return redirect()->route('transactions.upload', $transaction->id);
+
     }
 
     /**
