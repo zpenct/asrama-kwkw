@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             FloorSeeder::class,
             RoomSeeder::class,
+            UserAdminSeeder::class,
         ]);
 
     }
