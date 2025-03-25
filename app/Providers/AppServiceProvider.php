@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendResetPasswordEmail;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\ServiceProvider;
-use App\Listeners\SendResetPasswordEmail;
 
 class AppServiceProvider extends ServiceProvider
 {

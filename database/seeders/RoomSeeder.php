@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Room;
 use App\Models\Floor;
+use App\Models\Room;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoomSeeder extends Seeder
 {
@@ -20,8 +19,8 @@ class RoomSeeder extends Seeder
             for ($i = 1; $i <= rand(3, 7); $i++) {
                 Room::create([
                     'building_id' => $floor->building_id,
-                    'floor_id' => $floor->id, 
-                    'code' => 'R-DUM' . $floor->floor . $i,
+                    'floor_id' => $floor->id,
+                    'code' => 'R-DUM'.$floor->floor.$i,
                 ]);
             }
         }

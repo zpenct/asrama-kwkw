@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Floor;
 use App\Models\Building;
+use App\Models\Floor;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class FloorSeeder extends Seeder
 {

@@ -13,6 +13,7 @@ class WelcomeController extends Controller
     public function index()
     {
         $buildings = Building::all();
+
         return view('welcome', compact('buildings'));
     }
 

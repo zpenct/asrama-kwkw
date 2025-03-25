@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\FacilityResource\Pages;
 
+use App\Filament\Resources\FacilityResource;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\FacilityResource;
 
 class EditFacility extends EditRecord
 {

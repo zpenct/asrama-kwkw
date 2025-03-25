@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\BuildingResource\Pages;
 
+use App\Filament\Resources\BuildingResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\BuildingResource;
 
 class EditBuilding extends EditRecord
 {
@@ -21,7 +21,7 @@ class EditBuilding extends EditRecord
             'description' => $building->description,
             'image_url' => $building->image_url,
             'facilities' => $building->facilities->pluck('id')->toArray(),
-            'floors' => $building->floors->map(fn($floor) => [
+            'floors' => $building->floors->map(fn ($floor) => [
                 'floor' => $floor->floor,
                 'max_capacity' => $floor->max_capacity,
                 'price' => $floor->price,
@@ -39,6 +39,6 @@ class EditBuilding extends EditRecord
         return Notification::make()
             ->success()
             ->title('Gedung berhasil diedit!')
-            ->body("Silahkan tambahkan kamar-kamar");
+            ->body('Silahkan tambahkan kamar-kamar');
     }
 }

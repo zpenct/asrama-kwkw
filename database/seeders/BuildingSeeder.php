@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Building;
 use App\Models\Facility;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class BuildingSeeder extends Seeder
 {

@@ -2,24 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Facility;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FacilityResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\FacilityResource\RelationManagers;
+use App\Models\Facility;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check';
+
     protected static ?string $navigationGroup = 'Manajemen Logistik';
+
     protected static ?string $label = 'Fasilitas';
 
     public static function form(Form $form): Form
@@ -97,7 +96,7 @@ class FacilityResource extends Resource
         $user = Auth::user();
 
         // ONLY SUPERADMIN AND ADMIN CAN CREATE FACILITY
-        return $user && $user->role !== "MAHASISWA";
+        return $user && $user->role !== 'MAHASISWA';
     }
 
     public static function canDelete($record): bool
@@ -105,6 +104,6 @@ class FacilityResource extends Resource
         $user = Auth::user();
 
         // ONLY SUPERADMIN AND ADMIN CAN DELETE FACILITY
-        return $user && $user->role !== "MAHASISWA";
+        return $user && $user->role !== 'MAHASISWA';
     }
 }

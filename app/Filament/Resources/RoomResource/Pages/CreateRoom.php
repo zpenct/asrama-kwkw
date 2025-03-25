@@ -2,20 +2,19 @@
 
 namespace App\Filament\Resources\RoomResource\Pages;
 
-use App\Models\Room;
-use App\Models\Floor;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\QueryException;
 use App\Filament\Resources\RoomResource;
+use App\Models\Floor;
+use App\Models\Room;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class CreateRoom extends CreateRecord
 {
-
     protected static string $resource = RoomResource::class;
+
     protected static bool $canCreateAnother = false;
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -35,7 +34,7 @@ class CreateRoom extends CreateRecord
             foreach ($data['floors'] as &$floor) {
                 $floorId = $floor['id'] ?? null;
 
-                if (!empty($floor['id'])) {
+                if (! empty($floor['id'])) {
                     Floor::where('id', $floor['id'])->update([
                         'floor' => $floor['floor'],
                         'max_capacity' => $floor['max_capacity'],
@@ -54,22 +53,22 @@ class CreateRoom extends CreateRecord
 
                 $floorIds[] = $floorId;
 
-                if (!isset($floor['rooms']) || empty($floor['rooms'])) {
+                if (! isset($floor['rooms']) || empty($floor['rooms'])) {
                     continue;
                 }
 
                 foreach ($floor['rooms'] as &$room) {
-                    if (!isset($room['code']) || empty($room['code'])) {
+                    if (! isset($room['code']) || empty($room['code'])) {
                         continue;
                     }
 
-                    if (!isset($room['floor_id']) || empty($room['floor_id'])) {
+                    if (! isset($room['floor_id']) || empty($room['floor_id'])) {
                         $room['floor_id'] = $floorId;
                     }
 
-                    if (!empty($room['id'])) {
+                    if (! empty($room['id'])) {
                         $updatedRoom = Room::where('id', $room['id'])->update([
-                            'code' => $room['code']
+                            'code' => $room['code'],
                         ]);
                         $roomIds[] = $room['id'];
                     } else {
@@ -105,7 +104,7 @@ class CreateRoom extends CreateRecord
 
             if ($newRoom) {
                 return $newRoom;
-            } elseif (!empty($roomIds)) {
+            } elseif (! empty($roomIds)) {
                 return Room::find($roomIds[0]);
             } else {
                 throw new \Exception('Tidak ada kamar yang dibuat atau di-update.');
@@ -113,7 +112,7 @@ class CreateRoom extends CreateRecord
         } catch (QueryException $e) {
             DB::rollBack();
 
-            if ($e->getCode() == "23000" && str_contains($e->getMessage(), 'Duplicate entry')) {
+            if ($e->getCode() == '23000' && str_contains($e->getMessage(), 'Duplicate entry')) {
                 preg_match("/Duplicate entry '([^']+)' for key 'rooms.rooms_code_floor_id_unique'/", $e->getMessage(), $matches);
                 $duplicateEntry = $matches[1] ?? 'Kode kamar tidak diketahui';
 
@@ -125,11 +124,12 @@ class CreateRoom extends CreateRecord
             } else {
                 Notification::make()
                     ->title('Gagal Menyimpan!')
-                    ->body('Terjadi kesalahan: ' . $e->getMessage())
+                    ->body('Terjadi kesalahan: '.$e->getMessage())
                     ->danger()
                     ->send();
             }
-            return new Room();
+
+            return new Room;
         }
     }
 
@@ -248,13 +248,14 @@ class CreateRoom extends CreateRecord
     {
         return RoomResource::getUrl('index');
     }
+
     protected function getCreatedNotificationTitle(): ?string
     {
-        return "";
+        return '';
     }
 
     protected function getCreatedNotificationMessage(): ?string
     {
-        return "";
+        return '';
     }
 }

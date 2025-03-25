@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\RoomResource\Pages;
 
+use App\Filament\Resources\RoomResource;
 use App\Models\Room;
 use Filament\Actions;
-use Illuminate\Support\Facades\DB;
-use App\Filament\Resources\RoomResource;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\DB;
 
 class EditRoom extends EditRecord
 {

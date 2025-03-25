@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Filament\Facades\Filament;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\BookingController;
-use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\WelcomeController;
+use App\Models\User;
+use Filament\Facades\Filament;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -59,7 +59,7 @@ Route::post('/reset-password', function (Request $request) {
     );
 
     return $status === Password::PASSWORD_RESET
-        ? redirect()->route('filament.admin.auth.login')->with('status', __($status)) 
+        ? redirect()->route('filament.admin.auth.login')->with('status', __($status))
         : back()->withErrors(['email' => [__($status)]]);
 })->name('password.update');
 

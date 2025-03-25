@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Filament\Pages\Dashboard;
 
 class CheckAdminRole
 {
@@ -16,14 +15,14 @@ class CheckAdminRole
             return $next($request);
         }
 
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return $next($request);
         }
 
         // Cek role user yang sudah login
         $user = Auth::user();
 
-        if (!in_array(($user->role), ['ADMIN', 'SUPERADMIN'])) {
+        if (! in_array(($user->role), ['ADMIN', 'SUPERADMIN'])) {
             return redirect('/')->with('status', 'Silakan cek email Anda untuk reset password.');
         }
 

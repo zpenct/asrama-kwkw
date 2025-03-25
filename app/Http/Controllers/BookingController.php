@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -20,7 +20,6 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,7 +30,6 @@ class BookingController extends Controller
 
         $checkoutDate = Carbon::parse($validated['checkin_date'])
             ->addMonths((int) $validated['lama_inap']); // <- pastikan pakai addMonths()
-
 
         $booking = Booking::create([
             'room_id' => $validated['room_id'],
@@ -72,7 +70,6 @@ class BookingController extends Controller
 
         return redirect()->back()->with('success', 'Booking updated.');
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -1,29 +1,29 @@
 <?php
+
 // app/Filament/Resources/UserResource.php
+
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Facades\Filament;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Checkbox;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\DeleteAction;
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\User;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
     protected static ?string $navigationGroup = 'Manajemen User';
+
     protected static ?string $label = 'Pengguna';
 
     public static function form(Form $form): Form
@@ -48,8 +48,8 @@ class UserResource extends Resource
                     ->password()
                     ->placeholder('Masukkan Password')
                     ->maxLength(255)
-                    ->dehydrateStateUsing(fn($state) => !empty($state) ? $state : null)
-                    ->required(fn($livewire) => $livewire instanceof Pages\CreateUser)
+                    ->dehydrateStateUsing(fn ($state) => ! empty($state) ? $state : null)
+                    ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser)
                     ->nullable(),
 
                 // ONLY SUPERADMIN AND ADMIN CAN SEE THIS FIELD
@@ -61,7 +61,7 @@ class UserResource extends Resource
                         'MAHASISWA' => 'Mahasiswa',
                     ])
                     ->required()
-                    ->hidden(fn() => $user->role === 'MAHASISWA'), // ROLE 2 (MAHASISWA) CAN'T SEE THIS FIELD
+                    ->hidden(fn () => $user->role === 'MAHASISWA'), // ROLE 2 (MAHASISWA) CAN'T SEE THIS FIELD
 
                 Checkbox::make('is_first')
                     ->label('Wajib Reset Password Saat Pertama Login'),
@@ -76,7 +76,7 @@ class UserResource extends Resource
         return $table
             ->query(
                 User::query()
-                    ->when($user->role === 'MAHASISWA', fn($query) => $query->where('id', $user->id)) // ROLE 2 (MAHASISWA) CAN ONLY SEE THEIR OWN ACCOUNT
+                    ->when($user->role === 'MAHASISWA', fn ($query) => $query->where('id', $user->id)) // ROLE 2 (MAHASISWA) CAN ONLY SEE THEIR OWN ACCOUNT
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -89,7 +89,7 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('role')
                     ->label('Role')
-                    ->formatStateUsing(fn($state) => match ($state) {
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         'SUPERADMIN' => 'Superadmin',
                         'ADMIN' => 'Admin',
                         'MAHASISWA' => 'Mahasiswa',
@@ -148,7 +148,6 @@ class UserResource extends Resource
 
         return $user && $user->role === 'SUPERADMIN';
     }
-
 
     public static function getPages(): array
     {

@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\FacilityResource\Pages;
 
-use Filament\Actions;
+use App\Filament\Resources\FacilityResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Resources\FacilityResource;
 
 class CreateFacility extends CreateRecord
 {

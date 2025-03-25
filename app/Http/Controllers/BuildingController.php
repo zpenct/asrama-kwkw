@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Floor;
 use App\Models\Building;
+use App\Models\Floor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\HtmlString;
-use App\Http\Controllers\Controller;
 
 class BuildingController extends Controller
 {
-
     public function show($id, Request $request)
     {
 
@@ -25,21 +22,21 @@ class BuildingController extends Controller
             $roomQuery->withCount([
                 'bookings as booked_guest_count' => function ($q) use ($checkin, $checkout) {
                     $q->where('status', 'booked');
-        
+
                     if ($checkin && $checkout) {
                         $q->where('checkin_date', '<', $checkout)
-                          ->where('checkout_date', '>', $checkin);
+                            ->where('checkout_date', '>', $checkin);
                     }
-        
+
                     $q->select(DB::raw('COALESCE(SUM(total_guest), 0)'));
-                }
+                },
             ]);
-        
+
             // Sisa filter seperti sebelumnya
             $roomQuery->whereHas('floor', function ($q) {
                 $q->whereNotNull('max_capacity');
             });
-        
+
             if ($checkin && $checkout) {
                 $roomQuery->whereRaw('
                     (
@@ -57,8 +54,6 @@ class BuildingController extends Controller
                 ', [$checkout, $checkin]);
             }
         }]);
-        
-
 
         // $query = Floor::where('building_id', $id)->with(['rooms' => function ($roomQuery) use ($request) {
         //     // Booking filter aktif (checkin & lama_inap dipilih)
@@ -95,7 +90,6 @@ class BuildingController extends Controller
         //     });
         // }]);
 
-
         // filter lantai, kode kamar, harga, sorting seperti sebelumnya...
         if ($request->filled('floor')) {
             $query->where('floor', $request->floor);
@@ -103,7 +97,7 @@ class BuildingController extends Controller
 
         if ($request->filled('room_code')) {
             $query->whereHas('rooms', function ($q) use ($request) {
-                $q->where('code', 'like', '%' . $request->room_code . '%');
+                $q->where('code', 'like', '%'.$request->room_code.'%');
             });
         }
 

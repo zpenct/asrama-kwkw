@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Models\User;
-use Filament\Actions;
-use Illuminate\Support\Facades\Hash;
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends CreateRecord
 {
@@ -15,7 +14,7 @@ class CreateUser extends CreateRecord
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         // HASH PASSWORD IF FILLED
-        if (!empty($data['password']) && Hash::needsRehash($data['password'])) {
+        if (! empty($data['password']) && Hash::needsRehash($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
 

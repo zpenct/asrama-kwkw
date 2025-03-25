@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Room;
-use App\Models\Facility;
-use Illuminate\Support\HtmlString;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\HtmlString;
 
 class Building extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['name', 'description', 'type', 'image_url'];
 
@@ -29,7 +27,7 @@ class Building extends Model
     {
         return $this->hasMany(Floor::class);
     }
-    
+
     public function getDescriptionHtml()
     {
         return new HtmlString($this->description);
