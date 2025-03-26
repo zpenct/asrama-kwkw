@@ -4,27 +4,16 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class SuperAdminSeeder extends Seeder
+class SuperAdminRoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $user = User::firstOrCreate(
-            ['email' => 'superadmin@example.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => bcrypt('123123'),
-                'is_first' => false,
-            ]
-        );
-
-        // Ambil hanya permission untuk Role & User dari Filament Shield
         $permissions = Permission::whereIn('name', [
             'view_user',
             'view_any_user',
@@ -46,8 +35,5 @@ class SuperAdminSeeder extends Seeder
 
         // Assign hanya permission terkait Role dan User ke Admin
         $role->syncPermissions($permissions);
-
-        // Assign role super-admin ke user
-        $user->assignRole($role);
     }
 }
