@@ -20,7 +20,13 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             FloorSeeder::class,
             RoomSeeder::class,
+            SuperAdminRoleSeeder::class,
+            SuperAdminSeeder::class,
+            AdminRolePermissionSeeder::class,
+            AdminSeeder::class,
+            UserRoleSeeder::class,
+            UserSeeder::class,
         ]);
-        
+
     }
 }

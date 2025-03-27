@@ -1,16 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BuildingController;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\WelcomeController;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RedirectLogin;
+use Illuminate\Support\Facades\Password;
 
 
 Route::get('/', [WelcomeController::class, 'index']);
-Route::get('/buildings/{id}', [BuildingController::class, 'show'])->name('buildings.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/buildings/{id}', [BuildingController::class, 'show'])->name('buildings.show');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
+    Route::put('/booking/{booking}', [BookingController::class, 'update'])->name('booking.update');
+    Route::get('/transactions/{transaction}/upload', [TransactionController::class, 'upload'])->name('transactions.upload');
+    Route::post('/transactions/{transaction}/upload', [TransactionController::class, 'submitUpload'])->name('transactions.submit_upload');
+
+    // Route lainnya yang harus login
+});
 
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
@@ -46,7 +60,7 @@ Route::post('/reset-password', function (Request $request) {
     );
 
     return $status === Password::PASSWORD_RESET
-        ? redirect()->route('filament.admin.auth.login')->with('status', __($status)) // 🔹 Perbaiki nama route login
+        ? redirect()->route('filament.admin.auth.login')->with('status', __($status)) 
         : back()->withErrors(['email' => [__($status)]]);
 })->name('password.update');
 
