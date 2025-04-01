@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-lg mx-auto mt-6 p-6 bg-white rounded-lg shadow-sm">
+    <div class="max-w-lg mx-auto mt-6 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Upload Payment Proof</h2>
 
         {{-- Info Summary --}}
@@ -23,14 +23,18 @@
 
             <div class="flex justify-between">
                 <span class="text-gray-600">Payment Deadline</span>
-                <span class="font-medium text-red-600">{{ $transaction->expired_at->format('d M Y H:i') }}</span>
+                <span class="font-medium text-red-600">{{ $transaction->booking->expired_at }}</span>
             </div>
         </div>
 
         {{-- Notification Based on Status --}}
-        @if ($transaction->status === 'expired')
+        @if ($transaction->booking->status === 'expired' || $transaction->booking->expired_at < now())
             <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-6">
-                Waktu pembayaran sudah berakhir. Silakan buat booking baru.
+                Booking Anda telah kadaluarsa, Silahkan booking lagi.
+            </div>
+        @elseif($transaction->status === 'rejected')
+            <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-6">
+                Bukti pembayaran Anda telah ditolak oleh admin. Silahkan coba lagi.
             </div>
         @elseif ($transaction->status === 'waiting_verification')
             <div class="bg-blue-100 border border-blue-300 text-blue-700 px-4 py-3 rounded mb-6">
@@ -42,6 +46,7 @@
                 Selamat! Pembayaran Anda telah berhasil dan booking Anda telah dikonfirmasi.
             </div>
         @endif
+
 
         {{-- Upload Form --}}
         @if ($transaction->status === 'waiting_payment')

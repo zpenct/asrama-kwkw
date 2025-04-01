@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Models\Transaction;
-use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -22,7 +20,6 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,14 +29,15 @@ class BookingController extends Controller
         ]);
 
         $checkoutDate = Carbon::parse($validated['checkin_date'])
-            ->addMonths((int) $validated['lama_inap']); // <- pastikan pakai addMonths()
-
+            ->addMonths((int) $validated['lama_inap']);
 
         $booking = Booking::create([
             'room_id' => $validated['room_id'],
             'user_id' => Auth::id(),
             'checkin_date' => $validated['checkin_date'],
             'checkout_date' => $checkoutDate,
+            'status' => 'pending',
+            'expired_at' => now()->addHours(24),
         ]);
 
         return redirect()->route('booking.show', $booking->id);
@@ -54,44 +52,29 @@ class BookingController extends Controller
 
     public function update(Request $request, Booking $booking)
     {
-        $room = $booking->room;
-        $floor = $room->floor;
+        // Cek apakah sudah punya transaksi aktif
+        $latestTransaction = $booking->transactions()->latest()->first();
 
-        $usedGuests = Booking::where('room_id', $room->id)
-            ->where('status', 'booked')
-            ->where('id', '!=', $booking->id)
-            ->sum('total_guest');
-
-        $maxAvailable = max($floor->max_capacity - $usedGuests, 0) + $booking->total_guest;
-
-        $validated = $request->validate([
-            'total_guest' => "required|integer|min:1|max:$maxAvailable",
-        ]);
+        if ($latestTransaction && in_array($latestTransaction->status, ['waiting_payment', 'waiting_verification'])) {
+            return redirect()->route('transactions.upload', $latestTransaction->id);
+        }
 
         // Hitung ulang total amount
-        $checkin = Carbon::parse($booking->checkin_date);
-        $checkout = Carbon::parse($booking->checkout_date);
+        $checkin = \Carbon\Carbon::parse($booking->checkin_date);
+        $checkout = \Carbon\Carbon::parse($booking->checkout_date);
         $durationInYears = $checkin->floatDiffInRealYears($checkout);
-        $totalAmount = $floor->price * $validated['total_guest'] * $durationInYears;
 
-        $booking->update([
-            'total_guest' => $validated['total_guest'],
-        ]);
+        $totalAmount = $booking->room->floor->price * $booking->total_guest * $durationInYears;
 
-        // Buat transaction baru
-        $transaction = Transaction::create([
-            'id' => Str::uuid(),
+        $transaction = \App\Models\Transaction::create([
+            'id' => \Illuminate\Support\Str::uuid(),
             'booking_id' => $booking->id,
             'amount' => $totalAmount,
             'status' => 'waiting_payment',
-            'expired_at' => now()->addHours(24),
         ]);
 
-        // Redirect ke halaman upload bukti pembayaran (buat route-nya ya)
         return redirect()->route('transactions.upload', $transaction->id);
-
     }
-
 
     /**
      * Remove the specified resource from storage.
