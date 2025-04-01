@@ -124,7 +124,14 @@
                             <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
                                 @foreach ($floor->rooms as $room)
                                     @php
-                                        $bookings = $room->bookings()->where('status', 'booked')->get();
+
+                                        $bookings = $room
+                                            ->bookings()
+                                            ->whereIn('status', ['pending', 'booked'])
+                                            ->where(function ($q) {
+                                                $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
+                                            })
+                                            ->get();
 
                                         $fullFrom = null;
                                         $fullTo = null;
@@ -138,7 +145,10 @@
                                             foreach ($period as $date) {
                                                 $totalGuestOnDate = $room
                                                     ->bookings()
-                                                    ->where('status', 'booked')
+                                                    ->whereIn('status', ['pending', 'booked'])
+                                                    ->where(function ($q) {
+                                                        $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
+                                                    })
                                                     ->whereDate('checkin_date', '<=', $date)
                                                     ->whereDate('checkout_date', '>', $date)
                                                     ->sum('total_guest');
@@ -179,7 +189,7 @@
                                                 value="{{ \Carbon\Carbon::parse(request('checkin_date'))->addMonths((int) request('lama_inap'))->toDateString() }}">
                                             <button type="submit"
                                                 @if (!request('checkin_date') || !request('lama_inap')) disabled class="opacity-50 cursor-not-allowed book-now-btn" @endif
-                                                class="text-blue-600 group-hover:text-white text-sm book-now-btn">
+                                                class="text-blue-600 group-hover:text-white text-sm book-now-btn group-hover:bg-orange-500 rounded-full px-4 py-2">
                                                 Book Now →
                                             </button>
                                         </form>
@@ -246,7 +256,8 @@
                     button.textContent = 'Processing...';
                     button.classList.add('opacity-70', 'cursor-wait');
 
-                    button.innerHTML = `<svg class="animate-spin w-4 h-4 inline-block mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Processing...`;
+                    button.innerHTML =
+                        `<svg class="animate-spin w-4 h-4 inline-block mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Processing...`;
 
                     const form = button.closest('form');
                     if (form) {

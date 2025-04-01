@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Floor;
 use App\Models\Building;
+use App\Models\Floor;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class FloorSeeder extends Seeder
 {
@@ -22,7 +21,7 @@ class FloorSeeder extends Seeder
                     'building_id' => $building->id,
                     'floor' => $i,
                     'price' => rand(500000, 2000000),
-                    'max_capacity' => rand(50, 200),
+                    'max_capacity' => 2,
                 ]);
             }
         }

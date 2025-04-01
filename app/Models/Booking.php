@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Booking extends Model
 {
@@ -16,6 +16,8 @@ class Booking extends Model
         'checkin_date',
         'checkout_date',
         'total_guest',
+        'status',
+        'expired_at',
     ];
 
     // Relasi ke Room
@@ -33,5 +35,19 @@ class Booking extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class)->latestOfMany();
+    }
+
+    public function getComputedStatusAttribute()
+    {
+        if ($this->status === 'pending' && now()->greaterThan($this->expired_at)) {
+            return 'expired';
+        }
+
+        return $this->status;
     }
 }
