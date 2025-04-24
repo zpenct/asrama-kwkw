@@ -19,7 +19,7 @@ class RestrictAdminAccess
             'role' => $user?->role,
         ]);
 
-        if ($user && $user->hasAnyRole(['admin', 'superadmin'])) {
+        if ($user && $user->hasAnyRole(['admin', 'superadmin', 'super_admin'])) {
             abort(403, 'Akses hanya untuk pengguna non-admin.');
         }
 
