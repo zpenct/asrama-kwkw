@@ -13,7 +13,8 @@ class ExpireBookings extends Command
      *
      * @var string
      */
-    protected $signature = 'app:expire-bookings';
+    // protected $signature = 'app:expire-bookings';
+    protected $signature = 'expire:bookings';
 
     /**
      * The console command description.
