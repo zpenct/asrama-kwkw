@@ -50,4 +50,17 @@ class Booking extends Model
 
         return $this->status;
     }
+
+    public function getLamaInapBulanAttribute(): string
+    {
+        if (! $this->checkin_date || ! $this->checkout_date) {
+            return '-';
+        }
+
+        $checkin = \Carbon\Carbon::parse($this->checkin_date);
+        $checkout = \Carbon\Carbon::parse($this->checkout_date);
+        $months = $checkin->diffInMonths($checkout);
+
+        return $months.' bulan';
+    }
 }

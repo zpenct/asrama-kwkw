@@ -20,7 +20,6 @@ class Transaction extends Model
         'booking_id',
         'amount',
         'status',
-        'payment_method',
         'payment_proof',
         'uploaded_at',
         'paid_at',
