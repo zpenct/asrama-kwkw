@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="flex-shrink-0">
-                    <a href="/"
+                    <a href="{{ route('booking.show', $transaction->id) }}"
                     class="inline-block text-sm bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition">
                         Detail
                     </a>

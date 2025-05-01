@@ -25,7 +25,7 @@
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-4xl/7 whitespace-nowrap inika-bold text-center py-5">Asrama<br>Teknik</span>
         </a>
-        <a href="{{ route('transactions.show', auth()->id()) }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="{{ auth()->check() ? route('transactions.show', auth()->id()) : route('login') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl whitespace-nowrap">Transaction</span>
         </a>
 
