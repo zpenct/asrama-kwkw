@@ -3,22 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FacilityResource\Pages;
-use App\Filament\Resources\FacilityResource\RelationManagers;
 use App\Models\Facility;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check';
+
     protected static ?string $navigationGroup = 'Manajemen Logistik';
+
     protected static ?string $label = 'Fasilitas';
 
     public static function form(Form $form): Form
@@ -54,15 +55,24 @@ class FacilityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('description')->searchable(),
-                Tables\Columns\TextColumn::make('image_url')->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+
+                Action::make('lihatGambar')
+                    ->label('Lihat Gambar')
+                    ->icon('heroicon-o-photo')
+                    ->infolist([
+                        ImageEntry::make('image_url')
+                            ->disk('s3')
+                            ->columnSpanFull(),
+                    ])->modalSubmitAction(false)
+                    ->modalCancelAction(false),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -90,7 +100,4 @@ class FacilityResource extends Resource
     {
         return FacilityResource::getUrl('index');
     }
-
-
-    
 }

@@ -3,21 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Floor extends Model
 {
     protected $table = 'floors';
 
     protected $casts = [
-        'price' => 'decimal:2', 
+        'price' => 'decimal:2',
     ];
-
 
     protected $fillable = [
         'building_id',
         'floor',
         'max_capacity',
         'price',
+        'image_url',
     ];
 
     public function building()
@@ -25,9 +26,13 @@ class Floor extends Model
         return $this->belongsTo(Building::class);
     }
 
-
     public function rooms()
     {
-        return $this->hasMany(Room::class, 'floor_id'); 
+        return $this->hasMany(Room::class, 'floor_id');
     }
+
+    // public function getImageUrlAttribute($value)
+    // {
+    //     return Storage::disk('s3')->url($value);
+    // }
 }

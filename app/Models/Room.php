@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Floor;
-use App\Models\Booking;
-use App\Models\Building;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,7 +15,6 @@ class Room extends Model
     {
         return $this->belongsTo(Building::class);
     }
-
 
     public function floor()
     {
