@@ -7,11 +7,12 @@ use App\Models\Building;
 use App\Models\Floor;
 use App\Models\Room;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Table;
 use Illuminate\Validation\Rule;
 
@@ -95,12 +96,20 @@ class RoomResource extends Resource
                                     ->minValue(1)
                                     ->required(),
                                 Forms\Components\TextInput::make('price')
-                                    ->label('Harga per Kamar/Semester/Orang')
+                                    ->label('Harga per Kamar/Tahun/Orang')
                                     ->prefix('Rp')
                                     ->numeric()
                                     ->minValue(0)
                                     ->required()
                                     ->step(0.01),
+                                // Forms\Components\FileUpload::make('image_url')
+                                //   ->label('Gambar Kamar pada Lantai')
+                                //   ->disk('s3')
+                                //   ->visibility('private')
+                                //   ->directory('floors')
+                                //   ->image()
+                                //   ->required()
+                                //   ->columnSpanFull(),
                             ])->columns(3),
 
                     Forms\Components\Section::make('Daftar Kamar')
@@ -140,7 +149,7 @@ class RoomResource extends Resource
                 ])
                     ->columnSpanFull()
                     ->deleteAction(
-                        fn (Action $action): Action => $action
+                        fn (FormAction $action): FormAction => $action
                             ->requiresConfirmation()
                             ->modalHeading('Hapus Lantai?')
                             ->modalDescription(fn (array $state): string => 'Terdapat '.(isset($state['rooms']) ? count($state['rooms']) : 0).
@@ -168,14 +177,14 @@ class RoomResource extends Resource
                 Tables\Columns\TextColumn::make('code')->sortable(),
                 Tables\Columns\TextColumn::make('building.name')->label('Gedung')->sortable(),
                 Tables\Columns\TextColumn::make('floor.floor')->label('Lantai')->sortable(),
-                Tables\Columns\TextColumn::make('floor.price')->label('Harga/semester')->sortable()->formatStateUsing(function ($state) {
+                Tables\Columns\TextColumn::make('floor.price')->label('Harga/Tahun')->sortable()->formatStateUsing(function ($state) {
                     return 'Rp '.number_format($state, 0, ',', '.');
                 }),
                 Tables\Columns\TextColumn::make('floor.max_capacity')->label('Kapasitas')->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime('d M Y, H:i')->sortable(),
             ])
             ->actions([
-                Action::make('lihatGambar')
+                TableAction::make('lihatGambar')
                     ->label('Lihat Gambar')
                     ->icon('heroicon-o-photo')
                     ->infolist([

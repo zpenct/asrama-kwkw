@@ -112,7 +112,7 @@ class BuildingResource extends Resource
                                         ->required()
                                         ->default(0),
                                     Forms\Components\FileUpload::make('image_url')
-                                        ->label('Gambar Gedung')
+                                        ->label('Gambar Kamar pada lantai ini')
                                         ->disk('s3')
                                         ->visibility('private')
                                         ->directory('floors')
