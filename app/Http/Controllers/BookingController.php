@@ -50,9 +50,9 @@ class BookingController extends Controller
         return view('booking.show', compact('booking'));
     }
 
-    public function showTransactions($id)
+    public function showTransactions()
     {
-        $booking = Booking::with('room')->where('user_id', $id)->get();
+        $booking = Booking::with('room')->where('user_id', Auth::id())->get();
 
         return view('transactions.page', compact('booking'));
     }
