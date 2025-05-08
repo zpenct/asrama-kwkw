@@ -97,10 +97,11 @@ class BuildingResource extends Resource
                                     Forms\Components\TextInput::make('floor')
                                         ->label('Lantai')
                                         ->required()
-                                        ->afterStateHydrated(function (callable $set, callable $get) {
-                                            $existingFloors = count($get('floors') ?? []);
-                                            $set('floor', $existingFloors + 1);
-                                        }),
+                                    // ->afterStateHydrated(function (callable $set, callable $get) {
+                                    //     $existingFloors = count($get('floors') ?? []);
+                                    //     $set('floor', $existingFloors + 1);
+                                    // }),
+                                    ,
                                     Forms\Components\TextInput::make('max_capacity')
                                         ->label('Kapasitas Maksimum')
                                         ->numeric()
@@ -118,7 +119,12 @@ class BuildingResource extends Resource
                                         ->directory('floors')
                                         ->image()
                                         ->required()
-                                        ->columnSpanFull(),
+                                        ->columnSpanFull()
+                                        ->imagePreviewHeight('250')
+                                        ->panelAspectRatio('16:9')
+                                        ->panelLayout('integrated')
+                                        ->removeUploadedFileButtonPosition('right')
+                                        ->uploadProgressIndicatorPosition('left'),
                                 ])->columns(3)
                                 ->collapsible(true)
                                 ->defaultItems(1)

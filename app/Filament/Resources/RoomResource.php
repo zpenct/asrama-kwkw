@@ -58,6 +58,8 @@ class RoomResource extends Resource
                                             'floor' => $floor->floor,
                                             'max_capacity' => $floor->max_capacity,
                                             'price' => (int) $floor->price,
+                                            // 'image_url' => $floor->image_url,
+                                            'image_url' => $floor->image_url ? [$floor->image_url] : null,
                                             'rooms' => $floor->rooms
                                                 ->sortBy('updated_at')
                                                 ->map(fn ($room) => [
@@ -81,10 +83,10 @@ class RoomResource extends Resource
                     ->hidden(fn (callable $get) => empty($get('building_id')))
                     ->itemLabel(fn (array $state): ?string => "Lantai {$state['floor']} - Kapasitas: {$state['max_capacity']}, Harga: Rp".number_format($state['price'] ?? 0))
                     ->schema([
-                    Forms\Components\Hidden::make('id'),
-                    Forms\Components\Hidden::make('building_id')
+                        Forms\Components\Hidden::make('id'),
+                        Forms\Components\Hidden::make('building_id')
                             ->default(fn (callable $get) => $get('../../building_id')),
-                    Forms\Components\Grid::make()
+                        Forms\Components\Grid::make()
                             ->schema([
                                 Forms\Components\TextInput::make('floor')
                                     ->label('Nomor Lantai')
@@ -102,17 +104,19 @@ class RoomResource extends Resource
                                     ->minValue(0)
                                     ->required()
                                     ->step(0.01),
-                                // Forms\Components\FileUpload::make('image_url')
-                                //   ->label('Gambar Kamar pada Lantai')
-                                //   ->disk('s3')
-                                //   ->visibility('private')
-                                //   ->directory('floors')
-                                //   ->image()
-                                //   ->required()
-                                //   ->columnSpanFull(),
+                                Forms\Components\FileUpload::make('image_url')
+                                    ->label('Gambar Lantai')
+                                    ->disk('s3')
+                                    ->visibility('public')
+                                    ->directory('floors')
+                                    ->image()
+                                    ->formatStateUsing(fn ($state) => is_array($state) ? $state[0] ?? null : $state)
+                                    ->previewable()
+                                    ->downloadable()
+                                    ->columnSpanFull(),
                             ])->columns(3),
 
-                    Forms\Components\Section::make('Daftar Kamar')
+                        Forms\Components\Section::make('Daftar Kamar')
                             ->description(fn ($state) => 'Total kamar: '.(isset($state['rooms']) ? count($state['rooms']) : 0))
                             ->collapsible()
                             ->schema([
@@ -146,14 +150,14 @@ class RoomResource extends Resource
                                     ->addable()
                                     ->deletable(),
                             ]),
-                ])
+                    ])
                     ->columnSpanFull()
                     ->deleteAction(
                         fn (FormAction $action): FormAction => $action
                             ->requiresConfirmation()
                             ->modalHeading('Hapus Lantai?')
                             ->modalDescription(fn (array $state): string => 'Terdapat '.(isset($state['rooms']) ? count($state['rooms']) : 0).
-                              ' kamar pada lantai ini. Menghapus lantai ini akan menghapus semua kamar tersebut.')
+                                ' kamar pada lantai ini. Menghapus lantai ini akan menghapus semua kamar tersebut.')
                             ->modalSubmitActionLabel('Ya, Hapus Lantai')
                     )
                     ->default(function (callable $get) {
@@ -191,20 +195,20 @@ class RoomResource extends Resource
                         ImageEntry::make('floor.image_url')
                             ->disk('s3')
                             ->columnSpanFull(),
-                    ])->modalSubmitAction(false) // Hilangkan tombol Submit
-                    ->modalCancelAction(false), // Hilangkan tombol Cancel,
-        ])
+                    ])->modalSubmitAction(false)
+                    ->modalCancelAction(false),
+            ])
             ->filters([
                 Tables\Filters\SelectFilter::make('building_id')
                     ->label('Gedung')
                     ->options(Building::pluck('name', 'id'))
                     ->attribute('building_id'),
-        ])
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-        ]);
+            ]);
     }
 
     public static function getRelations(): array
