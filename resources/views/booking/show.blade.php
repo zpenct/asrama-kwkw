@@ -15,6 +15,7 @@
 
         $totalGuest = old('total_guest', $booking->total_guest ?? 1);
         $pricePerPersonPerYear = $floor->price;
+        $imageFloor = $floor->image_url;
 
         $checkin = \Carbon\Carbon::parse($booking->checkin_date);
         $checkout = \Carbon\Carbon::parse($booking->checkout_date);
@@ -33,11 +34,11 @@
     <div class="grid grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-6">
         <div class="col-span-2 row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
 
+            <div class="max-w-full rounded-lg">                
+                <img class="rounded-lg w-full bg-cover"
+                    src="{{ $imageFloor ? Storage::disk('s3')->url($imageFloor) : asset('images/default-floor.jpg') }}"
+                    alt="Floor Image" />
 
-            <div class="max-w-full rounded-lg">
-
-                <img class="rounded-t-lg w-full bg-cover" src="https://flowbite.com/docs/images/blog/image-1.jpg"
-                    alt="" />
 
                 <div class="divide-y rounded-lg mx-auto mt-10">
                     <div class="mb-8">
@@ -130,7 +131,6 @@
 
 
                 </div>
-
             </div>
 
         </div>
