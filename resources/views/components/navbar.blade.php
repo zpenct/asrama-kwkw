@@ -14,21 +14,21 @@
 }
 </style>
 
-<nav id="main-navbar" class="max-w-screen-xl bg-white border-b border-gray-200 sticky top-10 mx-auto transition-all z-50 rounded-2xl inter-base">
+<nav id="main-navbar" class=" sticky top-0 w-full border-b bg-white mx-auto transition-all inter-base z-30">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:px-8 md:px-4">
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl whitespace-nowrap">Home</span>
+            <span class="self-center text-2xl/5 whitespace-nowrap inika-bold text-center py-5">Asrama<br>Teknik</span>
         </a>
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl whitespace-nowrap">Booking</span>
-        </a>
-        <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-4xl/7 whitespace-nowrap inika-bold text-center py-5">Asrama<br>Teknik</span>
+            <span class="self-center text-xl whitespace-nowrap">Home</span>
         </a>
         <a href="{{ auth()->check() ? route('transactions.show', auth()->id()) : route('login') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl whitespace-nowrap">Transaction</span>
+            <span class="self-center text-xl whitespace-nowrap">Transaction</span>
         </a>
-
+        <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <span class="self-center text-xl whitespace-nowrap">Gallery</span>
+        </a>
+        
         <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             @auth
                 <button type="button" class="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-lg px-4 py-2 text-center flex gap-2"
@@ -68,19 +68,3 @@
         </div>
     </div>
 </nav>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const navbar = document.getElementById('main-navbar');
-        
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-                navbar.classList.remove('top-10');
-                navbar.classList.add('top-0');
-            } else {
-                navbar.classList.remove('top-0');
-                navbar.classList.add('top-10');
-            }
-        });
-    });
-</script>

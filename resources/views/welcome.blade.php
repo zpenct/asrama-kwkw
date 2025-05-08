@@ -17,8 +17,8 @@
 @section('title', 'Home')
 
 @section('content')
-    <main class="absolute top-0 left-0 min-h-screen w-full">
-        <section class="relative bg-cover bg-center bg-no-repeat h-screen w-full top-0 left-0 z-40 flex-row content-end" style="background-image: url('{{ asset('img/hero1.jpg') }}');">
+    <main class="min-h-screen w-full">
+        <section class="relative top-0 px-4 bg-cover bg-center bg-no-repeat h-screen w-full flex-row content-end" style="background-image: url('{{ asset('img/hero1.jpg') }}');">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
     
             <div class="relative max-w-screen-xl z-20 mx-auto mb-24">
@@ -26,7 +26,7 @@
             </div>
         </section>
     
-        <section class="mx-auto max-w-screen-xl py-8 h-full inter-base">
+        <section class="mx-auto max-w-screen-xl py-8 px-4 h-full inter-base">
             <div class="max-w-screen-xl inter-base p-3 text-3xl text-center">
                 <h3>Pilih Asrama Mu!</h3>
             </div>
