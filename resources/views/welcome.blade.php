@@ -26,7 +26,7 @@
             </div>
         </section>
     
-        <section class="mx-auto max-w-screen-xl py-8 px-4 h-full inter-base">
+        <section class="mx-auto max-w-screen-xl py-8 px-4 min-h-screen inter-base">
             <div class="max-w-screen-xl inter-base p-3 text-3xl text-center">
                 <h3>Pilih Asrama Mu!</h3>
             </div>
@@ -73,6 +73,5 @@
                 </div>
             </div>
         </section>
-        <x-footer />
     </main>
 @endsection
