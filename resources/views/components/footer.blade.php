@@ -13,7 +13,7 @@
 </style>
 
 <footer class="w-full bg-[#1E1E1E] inter-base">
-    <div class="max-w-screen-xl text-white mx-auto flex justify-between items-end py-10">
+    <div class="max-w-screen-xl text-white mx-auto flex justify-between items-end py-10 px-4">
         <div class="flex flex-col gap-10">
             <p class=" text-4xl">Kritik dan Saran</p>
             <div class="flex">
