@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-screen-xl px-4 mt-5 mx-auto space-y-6">
+    <div class="max-w-screen-xl px-4 my-5 mx-auto space-y-6">
         @foreach ($booking as $transaction)
             @php
                 $checkin = \Carbon\Carbon::parse($transaction->checkin_date);
