@@ -27,20 +27,20 @@
             <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse justify-center">
                 <span class="self-center text-4xl/7 whitespace-nowrap inika-bold text-center py-5">Asrama<br>Teknik</span>
             </a>
-                <div class="flex gap-14 text-sm text-white">
-                    <ul class="space-y-2">
-                        <li><a href="https://inomarunhas.com/divisi-asrama-teknik-ramtek/" class="hover:text-blue-600 transition duration-300">About Us</a></li>
+            <div class="flex gap-14 text-sm text-white">
+                <ul class="space-y-2">
+                    <li><a href="https://inomarunhas.com/divisi-asrama-teknik-ramtek/" class="hover:text-blue-600 transition duration-300">About Us</a></li>
                         <li><a href="#" class="hover:text-blue-600 transition duration-300">Contact</a></li>
-                    </ul>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-blue-600 transition duration-300">Services & Facilities</a></li>
-                        <li><a href="#" class="hover:text-blue-600 transition duration-300">How to book</a></li>
-                    </ul>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-blue-600 transition duration-300">Careers</a></li>
-                        <li><a href="https://maps.app.goo.gl/c3xjFJB7w5Ldn86VA" class="hover:text-blue-600 transition duration-300">Location</a></li>
-                    </ul>
-                </div>
+                </ul>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-blue-600 transition duration-300">Services & Facilities</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition duration-300">How to book</a></li>
+                </ul>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-blue-600 transition duration-300">Careers</a></li>
+                    <li><a href="https://maps.app.goo.gl/c3xjFJB7w5Ldn86VA" class="hover:text-blue-600 transition duration-300">Location</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <p class="text-white text-center pt-20 pb-5">© Copyright Asrama Teknik. All right reserved.</p>
