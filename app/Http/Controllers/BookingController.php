@@ -50,6 +50,13 @@ class BookingController extends Controller
         return view('booking.show', compact('booking'));
     }
 
+    public function showTransactions()
+    {
+        $booking = Booking::with('room')->where('user_id', Auth::id())->get();
+
+        return view('transactions.page', compact('booking'));
+    }
+
     public function update(Request $request, Booking $booking)
     {
         // Cek apakah sudah punya transaksi aktif

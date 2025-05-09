@@ -8,6 +8,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// TODO: set cron job
-// Schedule::command(\App\Console\Commands\ExpireBookings::class)
-//     ->everyTenMinutes();
+Schedule::command(\App\Console\Commands\ExpireBookings::class)
+    ->everySixHours();

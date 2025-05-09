@@ -23,6 +23,7 @@ Route::middleware(['auth', 'restrict.admin'])->group(function () {
     Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
     Route::put('/booking/{booking}', [BookingController::class, 'update'])->name('booking.update');
 
+    Route::get('/transactions/page', [BookingController::class, 'showTransactions'])->name('transactions.show');
     Route::get('/transactions/{transaction}/upload', [TransactionController::class, 'upload'])->name('transactions.upload');
     Route::post('/transactions/{transaction}/upload', [TransactionController::class, 'submitUpload'])->name('transactions.submit_upload');
     // Route lainnya yang harus login
