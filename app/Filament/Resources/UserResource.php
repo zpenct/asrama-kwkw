@@ -58,7 +58,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role user')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
-                Tables\Columns\CheckboxColumn::make('is_first')->label('Reset Password')->disabled(),
+                Tables\Columns\CheckboxColumn::make('is_first')->label('Belum Reset Password')->disabled(),
             ])
             ->filters([
                 //
