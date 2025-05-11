@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendResetPasswordEmail;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\ServiceProvider;
-use App\Listeners\SendResetPasswordEmail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            LoginResponse::class,
+            \App\Http\Responses\LoginResponse::class
+        );
     }
 
     /**
