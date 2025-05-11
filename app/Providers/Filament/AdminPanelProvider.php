@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\AdminPanelOnly;
 use App\Http\Middleware\CheckFirstLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -53,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 CheckFirstLogin::class,
+                AdminPanelOnly::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
