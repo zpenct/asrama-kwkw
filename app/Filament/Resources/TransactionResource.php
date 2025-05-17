@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
 class TransactionResource extends Resource
@@ -41,7 +43,15 @@ class TransactionResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Action::make('lihatGambar')
+                    ->label('Lihat Gambar')
+                    ->icon('heroicon-o-photo')
+                    ->infolist([
+                        ImageEntry::make('payment_proof')
+                            ->disk('s3')
+                            ->columnSpanFull(),
+                    ])->modalSubmitAction(false)
+                    ->modalCancelAction(false),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
