@@ -1,0 +1,31 @@
+name: Issue Reminder
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Assigned Issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+            });
+
+            for (const issue of issues.data) {
+              if (issue.assignees.length > 0 && !issue.comments) {
+                const assignees = issue.assignees.map(a => `@${a.login}`).join(' ');
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `👋 ${assignees} WOYY reminder: please take a look at this issue!`,
+                });
+              }
+            }
