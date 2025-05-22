@@ -19,7 +19,7 @@ jobs:
           php-version: '8.3'
           extensions: mbstring, bcmath, xml, curl, mysql
 
-      - name: Run remote SSH commands
+      - name: Run deployment on EC2 server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -27,18 +27,28 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/myapp
+
+            echo "✅ Tambahkan safe directory Git"
+            git config --global --add safe.directory /var/www/myapp
+
+            echo "✅ Pull source code dari GitHub"
+            git reset --hard
+            git clean -fd
             git pull origin development
+
+            echo "✅ Install Composer dependencies"
             composer install --no-dev --prefer-dist --no-progress
+
+            echo "✅ Install & Build Vite"
             npm ci
             npm run build
+
+            echo "✅ Artisan commands"
             php artisan migrate --force
             php artisan config:cache
             php artisan storage:link || true
             php artisan optimize
-            chown -R www-data:www-data .
-            chmod -R 775 storage bootstrap/cache
-            sudo chown -R www-data:www-data /var/www/myapp
-            sudo chmod -R 775 storage bootstrap/cache
-          
-  
 
+            echo "✅ Fix permission"
+            sudo chown -R www-data:www-data /var/www/myapp
+            sudo chmod -R 775 /var/www/myapp/storage /var/www/myapp/bootstrap/cache
