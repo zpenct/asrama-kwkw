@@ -52,7 +52,7 @@ class BookingController extends Controller
 
     public function showTransactions()
     {
-        $booking = Booking::with('room')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $booking = Booking::with('room', 'room.floor', 'room.building')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
         return view('transactions.page', compact('booking'));
     }
