@@ -1,16 +1,17 @@
-name: Issue Reminder
+name: ALERT Issue Reminder
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '*/5 * * * *' # Setiap 5 menit
 
 jobs:
   remind:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Assigned Issues
+      - name: Check Assigned Issues with Custom Token
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GH_PAT }}
           script: |
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -19,13 +20,14 @@ jobs:
             });
 
             for (const issue of issues.data) {
-              if (issue.assignees.length > 0 && !issue.comments) {
+              if (issue.assignees.length > 0 && issue.comments === 0) {
                 const assignees = issue.assignees.map(a => `@${a.login}`).join(' ');
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: `👋 ${assignees} WOYY reminder: please take a look at this issue!`,
+                  body: `👋 ${assignees} Kerjakan dulu zod [ reminder: please take a look at this issue!], this alert will show every 2 hours!`,
                 });
               }
             }
+
