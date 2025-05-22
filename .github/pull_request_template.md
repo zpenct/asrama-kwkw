@@ -1,10 +1,12 @@
 ## 📝 Deskripsi
 
-Jelaskan fitur/bugfix apa yang kamu kerjakan pada PR ini.
+Jelaskan fitur/bugfix apa yang kamu kerjakan pada PR ini (kasih 'x' di checkboxnya untuk checklist).
+- [ ] Your New Feature
+- [ ] Your New Feature
 
 ## 📎 Referensi / Issue
 
-Linked Issue: #123
+Linked Issue: #123 (Ini paste-in link issuenya aja)
 
 
 ## ✅ Checklist
