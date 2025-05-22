@@ -1,0 +1,56 @@
+name: Deploy Laravel Filament App
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, bcmath, xml, curl, mysql
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+
+      - name: Build assets with Vite
+        run: |
+          npm ci
+          npm run build
+
+      - name: Copy files to server via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "./"
+          target: "/var/www/myapp"
+          strip_components: 1
+
+      - name: Run remote SSH commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/myapp
+            php artisan config:cache
+            php artisan migrate --force
+            php artisan storage:link || true
+            php artisan optimize
+            sudo chown -R www-data:www-data /var/www/myapp
+            sudo chmod -R 775 storage bootstrap/cache
+          
+  
+
