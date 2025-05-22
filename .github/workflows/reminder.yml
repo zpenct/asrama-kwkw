@@ -2,7 +2,7 @@ name: ALERT Issue Reminder
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # Setiap 5 menit
+     - cron: '0 */3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: `👋 ${assignees} Kerjakan dulu zod [ reminder: please take a look at this issue!], this alert will show every 2 hours!`,
+                  body: `Reminder: 👋 ${assignees} Kerjakan dulu zod - You have been assigned to this issue. Please take action if you haven't already. This is an automated message sent every 2 hours to ensure issues receive timely attention. Thank you! 🤖 `,
                 });
               }
             }
