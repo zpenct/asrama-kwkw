@@ -15,6 +15,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="max-w-screen-xl px-4 mt-8 mb-7 mx-auto inter-base">
+        <h3 class="inter-bold text-5xl">Bookings</h3>
+        <p class="font-light text-xl">Riwayat Booking yang telah dilakukan</p>
+    </div>
+
     <div class="max-w-screen-xl px-4 my-5 mx-auto space-y-6 text-in inter-base">
         @foreach ($booking as $transaction)
             @php
