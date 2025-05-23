@@ -1,4 +1,4 @@
-name: Laravel CI
+name: CI Workflows
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - development
+  workflow_dispatch:
 
 jobs:
   test:
@@ -58,6 +59,13 @@ jobs:
           echo "DB_USERNAME=user" >> .env
           echo "DB_PASSWORD=password" >> .env
 
+          echo "DB_MASTER_CONNECTION=mysql" >> .env
+          echo "DB_MASTER_HOST=127.0.0.1" >> .env
+          echo "DB_MASTER_PORT=3306" >> .env
+          echo "DB_MASTER_DATABASE=asrama_ci" >> .env
+          echo "DB_MASTER_USERNAME=user" >> .env
+          echo "DB_MASTER_PASSWORD=password" >> .env
+
       - name: Generate application key
         run: php artisan key:generate
 
@@ -66,23 +74,9 @@ jobs:
 
       - name: Run migrations
         run: php artisan migrate --force
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: asrama_ci
-          DB_USERNAME: user
-          DB_PASSWORD: password
 
       - name: Run database seeder (optional)
         run: php artisan db:seed --force
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: asrama_ci
-          DB_USERNAME: user
-          DB_PASSWORD: password
 
       - name: Run tests
         run: php artisan test
