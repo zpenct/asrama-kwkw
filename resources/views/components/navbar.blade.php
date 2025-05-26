@@ -26,7 +26,7 @@
             <span class="self-center text-xl whitespace-nowrap">Bookings</span> 
         </a>
 
-        <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="{{ url('/gallery') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl whitespace-nowrap">Gallery</span>
         </a>
         
