@@ -22,9 +22,10 @@
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl whitespace-nowrap">Home</span>
         </a>
-        <a href="{{ auth()->check() ? route('transactions.show', auth()->id()) : route('login') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-xl whitespace-nowrap">Transaction</span>
+        <a href="{{ auth()->check() ? route('transactions.show') : route('login') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <span class="self-center text-xl whitespace-nowrap">Bookings</span> 
         </a>
+
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl whitespace-nowrap">Gallery</span>
         </a>
