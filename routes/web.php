@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\GalleryImageController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/gallery', [GalleryImageController::class, 'index']);
 
 Route::get('/login', function () {
     return redirect(Filament::getPanel('admin')->getLoginUrl());
