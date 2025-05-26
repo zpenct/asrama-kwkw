@@ -4,8 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -43,16 +44,38 @@ class TransactionResource extends Resource
                 //
             ])
             ->actions([
-                Action::make('lihatGambar')
-                    ->label('Lihat Gambar')
-                    ->icon('heroicon-o-photo')
-                    ->infolist([
-                        ImageEntry::make('payment_proof')
-                            ->disk('s3')
-                            ->columnSpanFull(),
-                    ])->modalSubmitAction(false)
-                    ->modalCancelAction(false),
+                Action::make('verifikasi')
+                    ->label('Verifikasi')
+                    ->icon('heroicon-o-check-circle')
+                    ->visible(fn ($record) => $record->status === 'waiting_verification')
+                    ->modalHeading('Verifikasi Bukti Pembayaran')
+                    ->form([
+
+                        ViewField::make('payment_proof_preview')
+                            ->view('components.payment-proof-preview')
+                            ->label('Bukti Pembayaran'),
+
+                        Select::make('action')
+                            ->label('Keputusan')
+                            ->options([
+                                'accept' => 'Terima Bukti',
+                                'reject' => 'Tolak Bukti',
+                            ])
+                            ->required(),
+                    ])
+                    ->action(function (array $data, $record) {
+                        if ($data['action'] === 'accept') {
+                            $record->status = 'paid';
+                            $record->paid_at = now();
+                            $record->booking->update(['status' => 'booked']);
+                        } else {
+                            $record->status = 'rejected';
+                            $record->booking->update(['status' => 'pending']);
+                        }
+                        $record->save();
+                    }),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),
