@@ -14,7 +14,7 @@
             @endforelse
         </div>
 
-        <h2 class="text-2xl font-bold mb-4">Floor Images</h2>
+        <h2 class="text-2xl font-bold my-4 ">Floor Images</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             @forelse ($floorPaths as $path)
                 <div class="bg-white rounded shadow">
