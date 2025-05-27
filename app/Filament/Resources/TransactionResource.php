@@ -3,14 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
+use App\Mail\TransactionAcceptedMail;
+use App\Mail\TransactionRejectedMail;
 use App\Models\Transaction;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 
 class TransactionResource extends Resource
 {
@@ -62,15 +66,22 @@ class TransactionResource extends Resource
                                 'reject' => 'Tolak Bukti',
                             ])
                             ->required(),
+
+                        Textarea::make('notes')
+                            ->label('Catatan untuk User')
+                            ->placeholder('Tulis alasan penolakan atau catatan lainnya...'),
                     ])
                     ->action(function (array $data, $record) {
                         if ($data['action'] === 'accept') {
                             $record->status = 'paid';
                             $record->paid_at = now();
                             $record->booking->update(['status' => 'booked']);
+
+                            Mail::to($record->booking->user->email)->send(new TransactionAcceptedMail($record, $data['notes'] ?? null));
                         } else {
                             $record->status = 'rejected';
                             $record->booking->update(['status' => 'pending']);
+                            Mail::to($record->booking->user->email)->send(new TransactionRejectedMail($record, $data['notes'] ?? null));
                         }
                         $record->save();
                     }),
