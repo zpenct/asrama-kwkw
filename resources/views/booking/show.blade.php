@@ -31,14 +31,12 @@
             $latestTransaction && in_array($transactionStatus, ['waiting_payment', 'waiting_verification']);
     @endphp
 
-    <div class="grid grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-6">
-        <div class="col-span-2 row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
-
-            <div class="max-w-full rounded-lg">                
+    <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-6">
+        <div class="md:col-span-2 md:row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
+            <div class="max-w-full rounded-lg">
                 <img class="rounded-lg w-full bg-cover"
                     src="{{ $imageFloor ? Storage::disk('s3')->url($imageFloor) : asset('images/default-floor.jpg') }}"
                     alt="Floor Image" />
-
 
                 <div class="divide-y rounded-lg mx-auto mt-10">
                     <div class="mb-8">
@@ -134,7 +132,7 @@
             </div>
 
         </div>
-        <div class="row-span-5 col-start-3">
+        <div class="md:row-span-5 md:col-start-3">
             <div class="mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">Booking Details</h2>
 
