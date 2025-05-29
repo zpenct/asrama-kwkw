@@ -54,6 +54,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role user')->searchable(),
