@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
 
@@ -33,19 +34,27 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
-
                 Tables\Columns\TextColumn::make('booking.room.code')->label('Kode Kamar')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('booking.user.name')->label('Pemesan')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
-                Tables\Columns\TextColumn::make('paid_at')->dateTime('d M Y, H:i')->sortable(),
+                Tables\Columns\TextColumn::make('paid_at')->label('Confirmed At')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('amount')->label('Total Transaksi')->sortable()->formatStateUsing(function ($state) {
                     return 'Rp '.number_format($state, 0, ',', '.');
                 }),
                 Tables\Columns\TextColumn::make('status')->searchable(),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Filter Status')
+                    ->multiple()
+                    ->options([
+                        'waiting_verification' => 'Menunggu Verifikasi',
+                        'paid' => 'Dibayar',
+                        'rejected' => 'Ditolak',
+                    ])->default(['waiting_verification', 'rejected']),
             ])
             ->actions([
                 Action::make('verifikasi')
