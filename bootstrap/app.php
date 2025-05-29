@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckFirstLogin;
 use App\Http\Middleware\RestrictAdminAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'restrict.admin' => RestrictAdminAccess::class,
+            'check.reset' => CheckFirstLogin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

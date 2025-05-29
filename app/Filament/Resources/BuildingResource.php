@@ -140,6 +140,7 @@ class BuildingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('name')->label('Nama Gedung')->searchable(),
                 \Filament\Tables\Columns\TextColumn::make('type')->label('Tipe')->searchable(),

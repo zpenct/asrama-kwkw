@@ -177,6 +177,7 @@ class RoomResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('code')->sortable(),
                 Tables\Columns\TextColumn::make('building.name')->label('Gedung')->sortable(),

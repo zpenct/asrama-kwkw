@@ -7,6 +7,7 @@ use App\Models\Booking;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class BookingResource extends Resource
@@ -26,6 +27,7 @@ class BookingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('room.code')->label('Kode Kamar')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('user.name')->label('Pemesan')->searchable(),
@@ -43,14 +45,20 @@ class BookingResource extends Resource
                         return $checkin.' → '.$checkout;
                     })
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('expired_at')->dateTime('d M Y, H:i')->sortable(),
-                Tables\Columns\TextColumn::make('transaction.status')->label('Status Pembayaran')->searchable(),
                 Tables\Columns\TextColumn::make('status')->searchable(),
-            ])
+                Tables\Columns\TextColumn::make('transaction.status')->label('Status Pembayaran')->searchable(),
+            ])->defaultSort('updated_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Filter Status')
+                    ->multiple()
+                    ->options([
+                        'pending' => 'Pending',
+                        'expired' => 'Expired',
+                        'booked' => 'Booked',
+                    ])->default(['pending', 'booked']),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
