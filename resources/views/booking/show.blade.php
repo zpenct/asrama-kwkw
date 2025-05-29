@@ -31,14 +31,12 @@
             $latestTransaction && in_array($transactionStatus, ['waiting_payment', 'waiting_verification']);
     @endphp
 
-    <div class="grid grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-6">
-        <div class="col-span-2 row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
-
-            <div class="max-w-full rounded-lg">                
+    <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-3 md:p-6">
+        <div class="md:col-span-2 md:row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
+            <div class="max-w-full rounded-lg">
                 <img class="rounded-lg w-full bg-cover"
                     src="{{ $imageFloor ? Storage::disk('s3')->url($imageFloor) : asset('images/default-floor.jpg') }}"
                     alt="Floor Image" />
-
 
                 <div class="divide-y rounded-lg mx-auto mt-10">
                     <div class="mb-8">
@@ -134,7 +132,7 @@
             </div>
 
         </div>
-        <div class="row-span-5 col-start-3">
+        <div class="md:row-span-5 md:col-start-3">
             <div class="mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">Booking Details</h2>
 
@@ -193,27 +191,25 @@
                 </div>
 
                 <div class="space-y-4">
-
-
-                    <div class="grid grid-cols-1 gap-2 rounded-xl bg-[#333A73] text-white p-2  mt-4">
+                    <div class="grid grid-cols-1 gap-2 rounded-xl bg-[#333A73] text-white p-2 mt-4">
                         <div class="flex gap-4">
                             <div class="flex-1 flex flex-col gap-1 p-2">
-                                <span class="text-xl leading-none">
+                                <span class="text-xl leading-none  font-semibold">
                                     Rp{{ number_format($pricePerPersonPerYear, 0, ',', '.') }}
                                 </span>
-                                <span class="text-xs font-bold">Harga per orang / tahun</span>
+                                <span class="text-xs">Harga per orang / tahun</span>
                             </div>
                             <div class="flex-1 flex flex-col gap-1 p-2">
-                                <span class="text-xl leading-none">
+                                <span class="text-xl leading-none font-semibold">
                                     {{ round($durationInMonths, 1) }} Bulan
                                 </span>
-                                <span class="text-xs font-semibold">Durasi inap</span>
+                                <span class="text-xs">Durasi inap</span>
                             </div>
-                            <div class="flex-1 hidden lg:flex flex-col gap-1 p-2">
-                                <span class="text-xl leading-none">
+                            <div class="flex-1 lg:flex flex-col gap-1 p-2">
+                                <span class="text-xl leading-none  font-semibold">
                                     {{ $booking->total_guest }}
                                 </span>
-                                <span class="text-xs font-semibold">Jumlah tamu</span>
+                                <span class="text-xs">Jumlah tamu</span>
                             </div>
                         </div>
                         <div class="bg-[#387ADF] p-2 rounded-lg">
