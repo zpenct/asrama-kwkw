@@ -17,9 +17,9 @@
 </style>
 
 <nav id="main-navbar" class=" sticky top-0 w-full border-b bg-white mx-auto transition-all inter-base z-30">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:px-8 md:px-4">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:px-8 md:px-4 py-1">
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl/5 whitespace-nowrap inika-bold text-center py-5">Asrama<br>Teknik</span>
+            <img src="{{ asset('logo/pt-inovasi.png') }}" alt="Logo Asrama Teknik" class="h-16">
         </a>
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-xl whitespace-nowrap">Home</span>
