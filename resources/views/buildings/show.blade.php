@@ -31,7 +31,7 @@
 
         {{-- Form Filter Booking --}}
         <form method="GET" action="{{ route('buildings.show', $building->id) }}"
-            class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6 mb-8 sticky top-0 z-50 bg-gray-50 py-6 w-full"
+            class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6 mb-8 lg:sticky lg:top-0 lg:z-50 bg-gray-50 py-6 w-full"
             id="form-cari-kamar">
 
             <div>
