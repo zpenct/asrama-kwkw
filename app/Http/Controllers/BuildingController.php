@@ -17,8 +17,9 @@ class BuildingController extends Controller
 
         $checkin = $request->filled('checkin_date') ? Carbon::parse($request->checkin_date) : null;
         $checkout = $checkin ? (clone $checkin)->addMonths((int) $request->lama_inap) : null;
+        $fullOccupancy = $request->boolean('full_occupancy');
 
-        $query = Floor::where('building_id', $id)->with(['rooms' => function ($roomQuery) use ($checkin, $checkout) {
+        $query = Floor::where('building_id', $id)->with(['rooms' => function ($roomQuery) use ($checkin, $checkout, $fullOccupancy) {
             $roomQuery->withCount([
                 'bookings as booked_guest_count' => function ($q) use ($checkin, $checkout) {
 
@@ -44,20 +45,35 @@ class BuildingController extends Controller
 
             if ($checkin && $checkout) {
                 $roomQuery->whereRaw('
-                (
-                    SELECT COALESCE(SUM(total_guest), 0)
-                    FROM bookings
-                    WHERE bookings.room_id = rooms.id
-                        AND bookings.status IN ("pending", "booked")
-                        AND (bookings.expired_at IS NULL OR bookings.expired_at > NOW())
-                        AND checkin_date < ?
-                        AND checkout_date > ?
-                ) < (
-                    SELECT max_capacity
-                    FROM floors
-                    WHERE floors.id = rooms.floor_id
-                )
-            ', [$checkout, $checkin]);
+                    (
+                        SELECT COALESCE(SUM(total_guest), 0)
+                        FROM bookings
+                        WHERE bookings.room_id = rooms.id
+                            AND bookings.status IN ("pending", "booked")
+                            AND (bookings.expired_at IS NULL OR bookings.expired_at > NOW())
+                            AND checkin_date < ?
+                            AND checkout_date > ?
+                    ) < (
+                        SELECT max_capacity
+                        FROM floors
+                        WHERE floors.id = rooms.floor_id
+                    )
+                ', [$checkout, $checkin]);
+
+                // Tambahan filter jika centang penuhi seluruh kamar
+                if ($fullOccupancy) {
+                    $roomQuery->whereRaw('
+                        (
+                            SELECT COALESCE(SUM(total_guest), 0)
+                            FROM bookings
+                            WHERE bookings.room_id = rooms.id
+                                AND bookings.status IN ("pending", "booked")
+                                AND (bookings.expired_at IS NULL OR bookings.expired_at > NOW())
+                                AND checkin_date < ?
+                                AND checkout_date > ?
+                        ) = 0
+                    ', [$checkout, $checkin]);
+                }
             }
         }]);
 

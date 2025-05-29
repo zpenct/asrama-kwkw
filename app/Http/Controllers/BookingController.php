@@ -31,6 +31,14 @@ class BookingController extends Controller
         $checkoutDate = Carbon::parse($validated['checkin_date'])
             ->addMonths((int) $validated['lama_inap']);
 
+        $room = \App\Models\Room::with('floor')->findOrFail($validated['room_id']);
+
+        // Cek apakah user memilih untuk penuhi seluruh kamar
+        $fullOccupancy = $request->boolean('full_occupancy');
+
+        // Isi total_guest berdasarkan pilihan
+        $totalGuest = $fullOccupancy ? $room->floor->max_capacity : 1;
+
         $booking = Booking::create([
             'room_id' => $validated['room_id'],
             'user_id' => Auth::id(),
@@ -38,6 +46,7 @@ class BookingController extends Controller
             'checkout_date' => $checkoutDate,
             'status' => 'pending',
             'expired_at' => now()->addHours(24),
+            'total_guest' => $totalGuest,
         ]);
 
         return redirect()->route('booking.show', $booking->id);
@@ -52,7 +61,7 @@ class BookingController extends Controller
 
     public function showTransactions()
     {
-        $booking = Booking::with('room', 'room.floor', 'room.building')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $booking = Booking::with('room', 'room.floor', 'room.building')->where('user_id', Auth::id())->orderBy('updated_at', 'desc')->get();
 
         return view('transactions.page', compact('booking'));
     }
