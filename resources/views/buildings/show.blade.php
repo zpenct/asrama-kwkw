@@ -31,7 +31,7 @@
 
         {{-- Form Filter Booking --}}
         <form method="GET" action="{{ route('buildings.show', $building->id) }}"
-            class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6 mb-8 sticky top-0 z-50 bg-gray-50 py-6 w-full"
+            class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6 mb-8 sticky top-0 z-50 bg-gray-50 py-6 w-full"
             id="form-cari-kamar">
 
             <div>
@@ -59,6 +59,13 @@
                     class="bg-white border border-gray-200 text-gray-700 cursor-not-allowed text-sm rounded-lg block w-full p-2.5">
             </div>
 
+            <div class="flex items-center mt-2">
+                <input type="checkbox" id="full_occupancy" name="full_occupancy" value="1"
+                    class="w-4 h-4 text-blue-600 border-gray-300 rounded" {{ request('full_occupancy') ? 'checked' : '' }}>
+                <label for="full_occupancy" class="ml-2 text-sm text-gray-700">Penuhi seluruh kamar</label>
+            </div>
+
+
             <div class="self-end">
                 <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-all">
@@ -73,9 +80,26 @@
                 {{ !request('checkin_date') || !request('lama_inap') ? 'Rooms' : 'Available Rooms' }}
             </h2>
 
-            {{-- Filter Sorting --}}
+
+            @php
+                // Ambil query string booking
+                $bookingParams = [
+                    'checkin_date' => request('checkin_date'),
+                    'lama_inap' => request('lama_inap'),
+                ];
+
+                $filterlessUrl = route('buildings.show', $building->id) . '?' . http_build_query($bookingParams);
+            @endphp
+
             <form method="GET" action="{{ route('buildings.show', $building->id) }}"
-                class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-6">
+                class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-7">
+
+                {{-- Inject hidden input untuk mempertahankan booking param --}}
+                @foreach ($bookingParams as $key => $val)
+                    @if ($val)
+                        <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+                    @endif
+                @endforeach
 
                 <select name="floor"
                     class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
@@ -105,9 +129,17 @@
                     <option value="desc" {{ request('sort_by') == 'desc' ? 'selected' : '' }}>Descending</option>
                 </select>
 
-                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg">Apply
-                    Filter</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg">
+                    Apply Filter
+                </button>
+
+                {{-- Tombol Clear Filter yang tetap mempertahankan checkin_date & lama_inap --}}
+                <a href="{{ $filterlessUrl }}"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 p-3 rounded-lg text-center block w-full mt-2 lg:mt-0 lg:w-auto">
+                    Clear
+                </a>
             </form>
+
 
             @if ($floors->isEmpty())
                 <p class="text-gray-500 italic mt-3">Maaf, Tidak ada kamar dengan spek seperti itu</p>
@@ -187,6 +219,9 @@
                                             <input type="hidden" name="lama_inap" value="{{ request('lama_inap') }}">
                                             <input type="hidden" name="checkout_date"
                                                 value="{{ \Carbon\Carbon::parse(request('checkin_date'))->addMonths((int) request('lama_inap'))->toDateString() }}">
+                                            <input type="hidden" name="full_occupancy"
+                                                value="{{ request('full_occupancy') ? '1' : '0' }}">
+
                                             <button type="submit"
                                                 @if (!request('checkin_date') || !request('lama_inap')) disabled class="opacity-50 cursor-not-allowed book-now-btn" @endif
                                                 class="text-blue-600 group-hover:text-white text-sm book-now-btn group-hover:bg-orange-500 rounded-full px-4 py-2">
