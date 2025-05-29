@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WelcomeController::class, 'index']);
-Route::get('/gallery', [GalleryImageController::class, 'index']);
+Route::get('/', [WelcomeController::class, 'index'])->middleware('check.reset');
+Route::get('/gallery', [GalleryImageController::class, 'index'])->middleware('check.reset');
 
 Route::get('/login', function () {
     return redirect(Filament::getPanel('admin')->getLoginUrl());
 })->name('login');
 
-Route::middleware(['auth', 'restrict.admin'])->group(function () {
+Route::middleware(['auth', 'restrict.admin', 'check.reset'])->group(function () {
     Route::get('/buildings/{id}', [BuildingController::class, 'show'])->name('buildings.show');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
