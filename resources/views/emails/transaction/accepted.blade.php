@@ -83,7 +83,7 @@
 
             <p>
                 <a class="cta-button"
-                    href="https://docs.google.com/document/d/1pYP4evJ0IRPknAigvfN_W5yHEmD6DRHiRYms3B7qPwQ/edit?usp=sharing"
+                    href="https://docs.google.com/document/d/1cXS7VdAe2_G6nYYlLe_GIIfi0_VOY61_/edit?usp=sharing&ouid=105487824535049138389&rtpof=true&sd=true"
                     target="_blank">
                     Isi Formulir Booking
                 </a>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Gallery - PT. Inovasi Benua Maritim')
+
 @section('content')
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-4">Building Images</h2>
