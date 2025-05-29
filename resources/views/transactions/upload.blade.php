@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-screen-xl mx-auto my-8 px-4 lg:px-8">
+    <div class="max-w-screen-xl mx-auto my-8 px-4 p-3 md:p-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Konfirmasi Pembayaran</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
