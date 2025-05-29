@@ -198,7 +198,7 @@
                                     @endphp
 
                                     <div
-                                        class="group ring-1 ring-gray-200 px-6 py-4 transition hover:-translate-y-1 hover:bg-blue-500 text-gray-800 hover:text-white rounded-lg bg-white">
+                                        class="group ring-1 ring-gray-200 px-6 py-4 transition hover:-translate-y-1 hover:bg-blue-600 text-gray-800 hover:text-white rounded-lg bg-white">
                                         <p class="text-base font-semibold">{{ $room->code }}</p>
                                         <p class="text-sm">{{ $room->booked_guest_count }}/{{ $floor->max_capacity }} Slot
                                             Terisi</p>
