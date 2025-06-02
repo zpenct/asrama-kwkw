@@ -4,17 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
     public function upload(Transaction $transaction)
     {
+        if ($transaction->booking->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('transactions.upload', compact('transaction'));
     }
 
     public function submitUpload(Request $request, Transaction $transaction)
     {
+        if ($transaction->booking->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         $request->validate([
             'payment_proof' => 'required|image|max:2048', // 2MB max
         ]);

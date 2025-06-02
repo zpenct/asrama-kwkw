@@ -39,6 +39,7 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('booking.room.code')->label('Kode Kamar')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('booking.user.name')->label('Pemesan')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
+                Tables\Columns\TextColumn::make('uploaded_at')->label('Uploaded At')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('paid_at')->label('Confirmed At')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('amount')->label('Total Transaksi')->sortable()->formatStateUsing(function ($state) {
                     return 'Rp '.number_format($state, 0, ',', '.');
