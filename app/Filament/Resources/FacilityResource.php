@@ -40,12 +40,11 @@ class FacilityResource extends Resource
                     ->label('Gambar')
                     ->disk('s3')
                     ->visibility('private')
-                    ->directory('buildings')
+                    ->directory('facilities')
                     ->image()
                     ->imagePreviewHeight('250')
                     ->maxSize(1024)
                     ->columnSpanFull(),
-
             ]);
     }
 

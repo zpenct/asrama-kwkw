@@ -12,10 +12,12 @@ class GalleryImageController extends Controller
 
         $floorPaths = $s3->files('floors');
         $buildingPaths = $s3->files('buildings');
+        $facilityPaths = $s3->files('facilities');
 
         return view('gallery.list', [
             'floorPaths' => $floorPaths,
             'buildingPaths' => $buildingPaths,
+            'facilityPaths' => $facilityPaths,
         ]);
     }
 }
