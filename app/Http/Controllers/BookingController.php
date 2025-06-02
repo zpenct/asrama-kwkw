@@ -56,6 +56,10 @@ class BookingController extends Controller
     {
         $booking = Booking::with('room.floor.building')->findOrFail($id);
 
+        if ($booking->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('booking.show', compact('booking'));
     }
 
@@ -68,6 +72,10 @@ class BookingController extends Controller
 
     public function update(Request $request, Booking $booking)
     {
+        if ($booking->user_id !== Auth::id()) {
+            abort(403); // Forbidden
+        }
+
         // Cek apakah sudah punya transaksi aktif
         $latestTransaction = $booking->transactions()->latest()->first();
 
