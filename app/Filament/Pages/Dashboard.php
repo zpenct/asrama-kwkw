@@ -13,6 +13,8 @@ class Dashboard extends FilamentDashboard
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $label = 'Analytics';
+
     protected function getHeaderWidgets(): array
     {
         return [
