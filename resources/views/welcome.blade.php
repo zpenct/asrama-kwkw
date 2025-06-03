@@ -20,16 +20,32 @@
 
 @section('content')
     <main class="min-h-screen w-full">
-        <section class="relative top-0 px-4 bg-cover bg-center bg-no-repeat h-screen w-full flex-row content-end"
-            style="background-image: url('{{ asset('img/hero1.jpg') }}');">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
-
-            <div class="relative max-w-screen-xl z-20 mx-auto mb-24 text-white text-center">
-                <h3 class=" text-4xl mb-4 inter-bold">Tinggal Nyaman, Belajar Tenang</h3>
-                <p class="inter-base text-base opacity-70">Asrama mahasiswa/i dengan suasana hangat, aman 24 jam, plus air
-                    dan listrik gratis. <br> Tinggal tenang, kuliah pun lancar.</p>
-            </div>
-        </section>
+        <div class="max-w-screen-xl px-8 py-6">
+            <section class="relative top-0 px-4 bg-cover bg-center bg-no-repeat max-md:pt-56 py-7 rounded-xl"
+                style="background-image: url('{{ asset('img/hero1.jpg') }}');">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10 rounded-b-xl"></div>
+    
+                <div class="relative z-20 mx-auto text-white md:grid md:grid-cols-2 justify-between gap-20">
+                    <div class="flex flex-col justify-end">
+                        <div class="flex flex-col gap-1 mb-8 max-md:text-center">
+                            <h3 class=" text-3xl inter-bold">Tinggal Nyaman, Belajar Tenang</h3>
+                            <p class="inter-base text-lg opacity-80">Dapatkan Asrama impian kalian!!</p>
+                        </div>
+                        <div class="w-full grid grid-flow-col gap-2 bg-blue-500 p-2 rounded-lg">
+                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Gratis Air</p>
+                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Gratis Listrik</p>
+                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Keamanan</p>
+                        </div>
+                    </div>
+                    <section class="max-md:hidden rounded-lg overflow-hidden">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1093.54833821619!2d119.49901959404765!3d-5.230314316694764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbee147fb76d7fd%3A0x88b0fffe0f90afee!2sRamsis%20FT%20Unhas%20Gowa!5e0!3m2!1sid!2sid!4v1748534726136!5m2!1sid!2sid"
+                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" class="mx-auto"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </section>
+                </div>
+            </section>
+        </div>
 
         <section class="mx-auto max-w-screen-xl mt-8 py-8 px-4 inter-base">
             <div class="max-w-screen-xl inter-base p-3 text-3xl">

@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white z-40 flex flex-col justify-start pt-6 px-6 space-y-5 overflow-auto transition-all duration-300 transform scale-y-0 origin-top">
+    <div id="mobile-menu" class="md:hidden fixed inset-0 bg-white z-40 flex flex-col justify-start pt-6 px-6 space-y-5 overflow-auto transition-all duration-300 transform scale-y-0 origin-top">
         @foreach ($navLinks as $link)
             <a href="{{ $link['url'] }}" class="text-base font-medium text-gray-700 hover:text-blue-600">
                 {{ $link['label'] }}
