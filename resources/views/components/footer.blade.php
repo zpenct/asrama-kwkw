@@ -14,47 +14,55 @@
     }
 </style>
 
-<footer class="w-full bg-[#1E1E1E] inter-base">
-    <div
-        class="max-w-screen-xl text-white mx-auto flex flex-col md:flex-row justify-between items-start gap-y-10 py-10 px-4">
-        {{-- Kritik dan Saran --}}
-        <div class="flex flex-col gap-6 w-full">
-            <p class="text-2xl font-bold">Kritik dan Saran</p>
-            <div class="flex flex-col sm:flex-row w-full md:max-w-[400px]">
-                <input placeholder="Tulis Disini"
-                    class="w-full sm:h-auto text-center italic rounded-t-md sm:rounded-t-none sm:rounded-l-md p-3 text-black" />
-                <a href="#"
-                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 text-center md:py-4 md:px-6 rounded-b-md sm:rounded-b-none sm:rounded-r-md">
-                    Kirim
-                </a>
-            </div>
-        </div>
+<footer class="w-full bg-[#1E1E1E] py-8 text-white">
+    <div class="max-w-screen-xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="md:col-span-2 order-1 md:order-none">
+        <h3 class="text-lg font-semibold mb-4">Kritik & Saran</h3>
+        <form class="">
+            <textarea
+            id="feedback"
+            rows="4"
+            placeholder="Tulis kritik atau saran Anda di sini..."
+            class="w-full p-3 text-sm text-black bg-white border border-gray-600 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            ></textarea>
+            <button
+            type="submit"
+            class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm px-6 py-2 rounded-md transition duration-300"
+            >
+            Kirim Masukan
+            </button>
+        </form>
+    </div>
 
-        {{-- Info & Links --}}
-        <div class="flex flex-col gap-6 w-full">
-            <a href="{{ url('/') }}" class="flex justify-center md:justify-start items-center">
-                <span class="text-2xl text-center md:text-left font-bold leading-tight">Asrama Teknik</span>
-            </a>
-
-            <div class="flex flex-col sm:flex-row sm:justify-between gap-y-6 text-sm text-white">
-                <ul class="space-y-2 text-center sm:text-left">
-                    <li><a href="https://inomarunhas.com/divisi-asrama-teknik-ramtek/"
-                            class="hover:text-blue-600 transition duration-300">About Us</a></li>
-                    <li><a href="#" class="hover:text-blue-600 transition duration-300">Contact</a></li>
-                </ul>
-                <ul class="space-y-2 text-center sm:text-left">
-                    <li><a href="#" class="hover:text-blue-600 transition duration-300">Services & Facilities</a>
-                    </li>
-                    <li><a href="#" class="hover:text-blue-600 transition duration-300">How to book</a></li>
-                </ul>
-                <ul class="space-y-2 text-center sm:text-left">
-                    <li><a href="#" class="hover:text-blue-600 transition duration-300">Careers</a></li>
-                    <li><a href="https://maps.app.goo.gl/c3xjFJB7w5Ldn86VA"
-                            class="hover:text-blue-600 transition duration-300">Location</a></li>
-                </ul>
-            </div>
+    <!-- Kolom 2: Logo & Deskripsi (di kanan) -->
+    <div class="order-2 md:order-none">
+        <a href="{{ url('/') }}" class="text-3xl font-bold text-white mb-4 inline-block">
+            Asrama Teknik
+        </a>
+        <p class="text-sm text-gray-400 leading-relaxed mt-2">
+            Tempat tinggal mahasiswa yang nyaman dan terjangkau, mendukung pengembangan akademik, sosial, dan organisasi di lingkungan Universitas Hasanuddin.
+        </p>
         </div>
     </div>
 
-    <p class="text-white text-center pt-10 pb-6 text-sm">© Copyright Asrama Teknik. All rights reserved.</p>
+    <!-- Bawah Footer: Copyright full width -->
+    <div class="border-t border-gray-700 mt-10 pt-6 w-full">
+        <div class="max-w-screen-xl mx-auto px-6 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-400 text-center md:text-left w-full md:w-auto">
+            © 2025 Asrama Teknik. All rights reserved.
+        </p>
+        <div class="flex gap-5">
+            <a href="{{ url('/') }}">
+            <img src="{{ asset('img/Facebook.png') }}" alt="Facebook" class="h-6 w-6 hover:opacity-80 transition">
+            </a>
+            <a href="{{ url('/') }}">
+            <img src="{{ asset('img/Instagram.png') }}" alt="Instagram" class="h-6 w-6 hover:opacity-80 transition">
+            </a>
+            <a href="{{ url('/') }}">
+            <img src="{{ asset('img/Twitter.png') }}" alt="Twitter" class="h-6 w-6 hover:opacity-80 transition">
+            </a>
+        </div>
+        </div>
+    </div>
 </footer>
+
