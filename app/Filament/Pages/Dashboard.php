@@ -4,7 +4,6 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\AnnualRevenueChart;
 use App\Filament\Widgets\BookingStatsOverview;
-use App\Filament\Widgets\DailyRevenueChart;
 use App\Filament\Widgets\Stats;
 use Filament\Pages\Dashboard as FilamentDashboard;
 
