@@ -16,16 +16,6 @@ class BookingStatsOverview extends BaseWidget
         $startYear = $today->copy()->startOfYear();
 
         return [
-            Stat::make('Pending Booking Today', Booking::whereDate('created_at', $today)->where('status', 'pending')->count())
-                ->description('Booking belum dikonfirmasi')
-                ->icon('heroicon-o-clock')
-                ->color('gray'),
-
-            Stat::make('Transaction Created Today', Transaction::whereDate('created_at', $today)->count())
-                ->description('Transaksi yang baru dibuat')
-                ->icon('heroicon-o-document')
-                ->color('gray'),
-
             Stat::make('Total Booking Tahun Ini', Booking::whereBetween('created_at', [$startYear, $today])->count())
                 ->description('Booking masuk selama tahun ini')
                 ->icon('heroicon-o-calendar')
@@ -36,7 +26,7 @@ class BookingStatsOverview extends BaseWidget
                 ->icon('heroicon-o-check-circle')
                 ->color('success'),
 
-            Stat::make('Total Pendapatan Tahun Ini', 'Rp ' . number_format(
+            Stat::make('Total Pendapatan Tahun Ini', 'Rp '.number_format(
                 Transaction::where('status', 'paid')
                     ->whereBetween('created_at', [$startYear, $today])
                     ->sum('amount'),
@@ -48,5 +38,10 @@ class BookingStatsOverview extends BaseWidget
                 ->icon('heroicon-o-currency-dollar')
                 ->color('warning'),
         ];
+    }
+
+    protected function getColumns(): int
+    {
+        return 3;
     }
 }

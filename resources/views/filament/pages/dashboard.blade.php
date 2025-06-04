@@ -1,15 +1,15 @@
 <x-filament-panels::page>
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($this->getHeaderWidgets() as $widget)
-            @if ($widget::class === \App\Filament\Widgets\AnnualRevenueChart::class)
-                <div class="col-span-1 sm:col-span-1 lg:col-span-3">
-                    {{ $widget }}
-                </div>
-            @else
-                <div class="col-span-1 sm:col-span-1 lg:col-span-1">
-                    {{ $widget }}
-                </div>
-            @endif
+            @php
+                $isFullWidth = in_array($widget::class, [
+                    \App\Filament\Widgets\AnnualRevenueChart::class,
+                ]);
+            @endphp
+
+            <div class="{{ $isFullWidth ? 'col-span-1 sm:col-span-2 lg:col-span-3' : 'col-span-1' }}">
+                {{ $widget }}
+            </div>
         @endforeach
     </div>
 </x-filament-panels::page>
