@@ -14,6 +14,8 @@ class AnnualRevenueChart extends ChartWidget
 
     public ?string $yearFilter = null;
 
+    protected int | string | array $columnSpan = 'full';
+
     protected function getData(): array
     {
         $selectedYear = $this->yearFilter ?? now()->year;

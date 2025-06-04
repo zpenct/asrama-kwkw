@@ -19,7 +19,9 @@ class BuildingResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Logistik';
 
-    protected static ?string $label = 'Gedung';
+    protected static ?string $navigationLabel  = 'Gedung';
+    
+    protected static ?string $pluralModelLabel   = 'Gedung';
 
     public static function form(Form $form): Form
     {

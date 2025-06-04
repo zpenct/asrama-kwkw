@@ -24,7 +24,9 @@ class RoomResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Logistik';
 
-    protected static ?string $label = 'Kamar';
+    protected static ?string $navigationLabel  = 'Kamar';
+    
+    protected static ?string $pluralModelLabel   = 'Kamar';
 
     public static function form(Form $form): Form
     {
