@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\AnnualRevenueChart;
 use App\Filament\Widgets\BookingStatsOverview;
-use App\Filament\Widgets\Stats;
+use App\Filament\Widgets\TodayBookingStatsWidget;
 use Filament\Pages\Dashboard as FilamentDashboard;
 
 class Dashboard extends FilamentDashboard
@@ -16,7 +16,7 @@ class Dashboard extends FilamentDashboard
     protected function getHeaderWidgets(): array
     {
         return [
-            Stats::class,
+            TodayBookingStatsWidget::class,
             BookingStatsOverview::class,
             AnnualRevenueChart::class,
         ];
