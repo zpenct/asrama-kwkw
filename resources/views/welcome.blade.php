@@ -20,8 +20,8 @@
 
 @section('content')
     <main class="min-h-screen w-full flex gap-4 flex-col">
-        <div class="max-w-screen-xl md:px-8 px-4 py-4">
-            <section class="relative top-0 px-4 bg-cover bg-center bg-no-repeat max-md:pt-56 py-7 rounded-xl"
+        <div class="w-full content-center md:px-8 px-4 py-4">
+            <section class="max-w-screen-xl mx-auto relative top-0 px-4 bg-cover bg-center bg-no-repeat max-md:pt-56 py-7 rounded-xl"
                 style="background-image: url('{{ asset('img/hero1.jpg') }}');">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10 rounded-b-xl"></div>
     
