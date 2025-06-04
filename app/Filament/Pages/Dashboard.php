@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\AnnualRevenueChart;
 use App\Filament\Widgets\BookingStatsOverview;
 use App\Filament\Widgets\DailyRevenueChart;
 use App\Filament\Widgets\Stats;
@@ -13,14 +14,12 @@ class Dashboard extends FilamentDashboard
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $label = 'Analytics';
-
     protected function getHeaderWidgets(): array
     {
         return [
             Stats::class,
             BookingStatsOverview::class,
-            DailyRevenueChart::class,
+            AnnualRevenueChart::class,
         ];
     }
 }

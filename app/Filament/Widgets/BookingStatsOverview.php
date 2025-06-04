@@ -13,23 +13,40 @@ class BookingStatsOverview extends BaseWidget
     protected function getStats(): array
     {
         $today = Carbon::today();
-        $startMonth = $today->copy()->startOfMonth();
+        $startYear = $today->copy()->startOfYear();
 
         return [
-            Stat::make('Total Booking Bulan Ini', Booking::whereBetween('created_at', [$startMonth, $today])->count())
-                ->description('Booking masuk sejak awal bulan')
-                ->color('primary')
-                ->icon('heroicon-o-calendar'),
+            Stat::make('Pending Booking Today', Booking::whereDate('created_at', $today)->where('status', 'pending')->count())
+                ->description('Booking belum dikonfirmasi')
+                ->icon('heroicon-o-clock')
+                ->color('gray'),
 
-            Stat::make('Total Transaksi Berhasil Bulan Ini', Transaction::where('status', 'paid')->whereBetween('paid_at', [$startMonth, $today])->count())
-                ->description('Transaksi yang sudah dibayar')
-                ->color('success')
-                ->icon('heroicon-o-check-circle'),
+            Stat::make('Transaction Created Today', Transaction::whereDate('created_at', $today)->count())
+                ->description('Transaksi yang baru dibuat')
+                ->icon('heroicon-o-document')
+                ->color('gray'),
 
-            Stat::make('Total Pendapatan Bulan Ini', number_format(Transaction::where('status', 'paid')->whereBetween('paid_at', [$startMonth, $today])->sum('amount')))
-                ->description('Akumulasi nilai transaksi')
-                ->color('warning')
-                ->icon('heroicon-o-currency-dollar'),
+            Stat::make('Total Booking Tahun Ini', Booking::whereBetween('created_at', [$startYear, $today])->count())
+                ->description('Booking masuk selama tahun ini')
+                ->icon('heroicon-o-calendar')
+                ->color('primary'),
+
+            Stat::make('Transaksi Diterima Tahun Ini', Transaction::where('status', 'paid')->whereBetween('created_at', [$startYear, $today])->count())
+                ->description('Transaksi yang sudah divalidasi admin')
+                ->icon('heroicon-o-check-circle')
+                ->color('success'),
+
+            Stat::make('Total Pendapatan Tahun Ini', 'Rp ' . number_format(
+                Transaction::where('status', 'paid')
+                    ->whereBetween('created_at', [$startYear, $today])
+                    ->sum('amount'),
+                0,
+                ',',
+                '.'
+            ))
+                ->description('Akumulasi nilai transaksi valid')
+                ->icon('heroicon-o-currency-dollar')
+                ->color('warning'),
         ];
     }
 }

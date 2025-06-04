@@ -13,9 +13,10 @@ class Stats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Users', User::count()),
-            Stat::make('Pending Booking Today', Booking::whereDate('created_at', today())->count()),
-            Stat::make('Transaction Created Today', Transaction::whereDate('created_at', today())->count()),
+            // Stat::make('Total Users', User::count()),
+            // Stat::make('Pending Booking Today', Booking::whereDate('created_at', today())->count()),
+            // Stat::make('Transaction Created Today', Transaction::whereDate('created_at', today())->count()),
+            
             // Stat::make('Unique views', '192.1k')
             //     ->description('32k increase')
             //     ->descriptionIcon('heroicon-m-arrow-trending-up')
