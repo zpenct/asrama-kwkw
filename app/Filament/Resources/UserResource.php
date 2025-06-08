@@ -18,9 +18,9 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen User';
 
-    protected static ?string $navigationLabel  = 'Pengguna';
-    
-    protected static ?string $pluralModelLabel   = 'Pengguna';
+    protected static ?string $navigationLabel = 'Pengguna';
+
+    protected static ?string $pluralModelLabel = 'Pengguna';
 
     public static function form(Form $form): Form
     {
@@ -43,6 +43,14 @@ class UserResource extends Resource
                     ->relationship('roles', 'name')
                     ->required(),
 
+                Forms\Components\Select::make('gender')
+                    ->label('Gender')
+                    ->options([
+                        'male' => 'Laki-laki',
+                        'female' => 'Perempuan',
+                    ])
+                    ->required(),
+
                 Forms\Components\TextInput::make('password')
                     ->label('Password')
                     ->placeholder('Masukkan Password')
@@ -61,6 +69,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role user')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
+                Tables\Columns\TextColumn::make('gender')->label('Gender'),
                 Tables\Columns\CheckboxColumn::make('is_first')->label('Belum Reset Password')->disabled(),
             ])
             ->filters([
