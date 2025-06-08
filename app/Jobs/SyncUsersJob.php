@@ -31,6 +31,7 @@ class SyncUsersJob implements ShouldQueue
                     'name' => $student->full_name,
                     'password' => bcrypt($student->student_number),
                     'is_first' => false,
+                    'gender' => $student->gender,
                 ]
             );
 

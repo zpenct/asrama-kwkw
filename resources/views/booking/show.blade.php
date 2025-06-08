@@ -31,6 +31,13 @@
             $latestTransaction && in_array($transactionStatus, ['waiting_payment', 'waiting_verification']);
     @endphp
 
+    @if (session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
     <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-5 gap-6 max-w-8xl mx-auto p-3 md:p-6">
         <div class="md:col-span-2 md:row-span-5 bg-white border border-gray-200 shadow-sm rounded-lg p-6">
             <div class="max-w-full rounded-lg">

@@ -29,10 +29,28 @@
             @endif
         </div>
 
+        @php
+            $userGender = auth()->user()?->gender; // "male" atau "female"
+            $buildingType = $building->type; // "PUTRA" atau "PUTRI"
+            $canBook = !(
+                ($userGender === 'male' && $buildingType === 'PUTRI') ||
+                ($userGender === 'female' && $buildingType === 'PUTRA')
+            );
+        @endphp
+
+        @if (!$canBook)
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 mt-5" role="alert">
+                <strong class="font-bold">Maaf!</strong>
+                <span class="block sm:inline">Kamu tidak diperbolehkan booking gedung ini karena perbedaan gender.</span>
+            </div>
+        @endif
+
+
         {{-- Form Filter Booking --}}
         <form method="GET" action="{{ route('buildings.show', $building->id) }}"
             class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6 mb-8 lg:sticky lg:top-0 lg:z-50 bg-gray-50 py-6 w-full"
-            id="form-cari-kamar">
+            id="form-cari-kamar" @if (!$canBook) onsubmit="return false;" @endif>
+
 
             <div>
                 <label for="checkin_date" class="block text-sm font-medium">Check-in Date</label>
@@ -209,25 +227,42 @@
                                                 {{ $fullTo->format('d M Y') }}
                                             </p>
                                         @endif
+                                        @php
+                                            $userGender = auth()->user()->gender ?? null; // 'male' / 'female'
+                                            $buildingType = $building->type; // 'PUTRA' / 'PUTRI'
+                                            $genderMismatch =
+                                                ($userGender === 'male' && $buildingType === 'PUTRI') ||
+                                                ($userGender === 'female' && $buildingType === 'PUTRA');
+                                            $checkin = request('checkin_date');
+                                            $lama = request('lama_inap');
+                                        @endphp
 
-                                        <form id="booking-form-{{ $room->id }}" action="{{ route('booking.store') }}"
-                                            method="POST" class="mt-4">
-                                            @csrf
-                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                            <input type="hidden" name="checkin_date"
-                                                value="{{ request('checkin_date') }}">
-                                            <input type="hidden" name="lama_inap" value="{{ request('lama_inap') }}">
-                                            <input type="hidden" name="checkout_date"
-                                                value="{{ \Carbon\Carbon::parse(request('checkin_date'))->addMonths((int) request('lama_inap'))->toDateString() }}">
-                                            <input type="hidden" name="full_occupancy"
-                                                value="{{ request('full_occupancy') ? '1' : '0' }}">
+                                        @if ($genderMismatch)
+                                            <div class="mt-4 text-sm text-red-500 italic">
+                                                Gedung ini hanya tersedia untuk
+                                                {{ $buildingType === 'PUTRA' ? 'laki-laki' : 'perempuan' }}.
+                                            </div>
+                                        @else
+                                            <form id="booking-form-{{ $room->id }}"
+                                                action="{{ route('booking.store') }}" method="POST" class="mt-4">
+                                                @csrf
+                                                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                                <input type="hidden" name="checkin_date" value="{{ $checkin }}">
+                                                <input type="hidden" name="lama_inap" value="{{ $lama }}">
+                                                <input type="hidden" name="checkout_date"
+                                                    value="{{ $checkin && $lama ? \Carbon\Carbon::parse($checkin)->addMonths((int) $lama)->toDateString() : '' }}">
+                                                <input type="hidden" name="full_occupancy"
+                                                    value="{{ request('full_occupancy') ? '1' : '0' }}">
 
-                                            <button type="submit"
-                                                @if (!request('checkin_date') || !request('lama_inap')) disabled class="opacity-50 cursor-not-allowed book-now-btn" @endif
-                                                class="text-blue-600 group-hover:text-white text-sm book-now-btn group-hover:bg-orange-500 rounded-full px-4 py-2">
-                                                Book Now →
-                                            </button>
-                                        </form>
+                                                <button type="submit"
+                                                    @if (!$checkin || !$lama) disabled class="opacity-50 cursor-not-allowed book-now-btn" @endif
+                                                    class="text-blue-600 group-hover:text-white text-sm book-now-btn group-hover:bg-orange-500 rounded-full px-4 py-2">
+                                                    Book Now →
+                                                </button>
+                                            </form>
+                                        @endif
+
+
                                     </div>
                                 @endforeach
                             </ul>
