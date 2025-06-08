@@ -23,10 +23,7 @@
             Silakan cek kotak masuk Anda dan ikuti petunjuknya.
         </p>
 
-        <a href="{{ url('/') }}"
-            class="inline-block bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-6 py-2 rounded-lg transition duration-300">
-            Kembali ke Beranda
-        </a>
+       
     </div>
 
 </body>
