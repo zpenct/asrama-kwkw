@@ -33,9 +33,7 @@ class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')->label('Pemesan')->searchable(),
                 Tables\Columns\TextColumn::make('total_guest')->label('Total Penghuni / Calon')->searchable(),
                 Tables\Columns\TextColumn::make('lama_inap_bulan')
-                    ->label('Lama Inap')
-                    ->sortable(),
-
+                    ->label('Lama Inap'),
                 Tables\Columns\TextColumn::make('tanggal_menginap')
                     ->label('Tanggal Menginap')
                     ->getStateUsing(function ($record) {
@@ -43,8 +41,7 @@ class BookingResource extends Resource
                         $checkout = \Carbon\Carbon::parse($record->checkout_date)->translatedFormat('d M Y');
 
                         return $checkin.' → '.$checkout;
-                    })
-                    ->sortable(),
+                    }),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('expired_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('status')->searchable(),
