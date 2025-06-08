@@ -24,21 +24,35 @@
 
         <div class="flex">
             <div class="hidden md:flex items-center space-x-6">
+
                 @php
-                    $navLinks = [
-                        ['label' => 'Home', 'url' => url('/')],
-                        auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('superadmin')) ?
-                            ['label' => 'Dashboard', 'url' => route('filament.admin.pages.dashboard')] :
-                            ['label' => 'Booking', 'url' => auth()->check() ? route('transactions.show') : route('login')],
-                        ['label' => 'Gallery', 'url' => url('/gallery')],
-                    ];
+                    $navLinks = [['label' => 'Home', 'url' => url('/')]];
+
+                    if (
+                        auth()->check() &&
+                        (auth()->user()->hasRole('admin') ||
+                            auth()->user()->hasRole('super_admin') ||
+                            auth()->user()->hasRole('superadmin'))
+                    ) {
+                        $navLinks[] = ['label' => 'Dashboard', 'url' => route('filament.admin.pages.dashboard')];
+                    } else {
+                        $navLinks[] = [
+                            'label' => 'Booking',
+                            'url' => auth()->check() ? route('transactions.show') : route('login'),
+                        ];
+                    }
+
+                    $navLinks[] = ['label' => 'Gallery', 'url' => url('/gallery')];
                 @endphp
+
 
                 @foreach ($navLinks as $link)
                     <a href="{{ $link['url'] }}" class="flex items-center">
-                        <span class="relative inline-block text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out group hover:scale-105">
+                        <span
+                            class="relative inline-block text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out group hover:scale-105">
                             {{ $link['label'] }}
-                            <span class="absolute left-0 bottom-0 h-0.5 w-0 bg-blue-500 transition-all duration-300 ease-in-out group-hover:w-full"></span>
+                            <span
+                                class="absolute left-0 bottom-0 h-0.5 w-0 bg-blue-500 transition-all duration-300 ease-in-out group-hover:w-full"></span>
                         </span>
                     </a>
                 @endforeach
@@ -46,8 +60,8 @@
 
             <div class="flex items-center space-x-3 md:space-x-4">
                 <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none z-50">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
@@ -55,9 +69,11 @@
                 @auth
                     <div class="hidden md:block relative">
                         <button type="button" id="user-menu-button-desktop"
-                            class="text-blue-600 border-2 border-blue-600 hover:bg-blue-500 hover:text-white hover:border-0 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-20 h-10 flex items-center justify-center transition-all">
-                            <div class="w-8 h-8 rounded-full text-black flex items-center justify-center font-semibold uppercase">
+                            class="text-blue-600 border-2 border-blue-600 hover:bg-blue-500 hover:text-white hover:border-0 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-10 h-10 flex items-center justify-center transition-all">
+                            <div
+                                class="w-8 h-8 rounded-full text-black flex items-center justify-center font-semibold uppercase">
                                 {{ strtoupper(auth()->user()->name[0]) }}
+
                             </div>
                         </button>
                         <div id="user-dropdown-desktop"
@@ -89,7 +105,8 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="md:hidden fixed inset-0 bg-white z-40 flex flex-col justify-start pt-6 px-6 space-y-5 overflow-auto transition-all duration-300 transform scale-y-0 origin-top">
+    <div id="mobile-menu"
+        class="md:hidden fixed inset-0 bg-white z-40 flex flex-col justify-start pt-6 px-6 space-y-5 overflow-auto transition-all duration-300 transform scale-y-0 origin-top">
         @foreach ($navLinks as $link)
             <a href="{{ $link['url'] }}" class="text-base font-medium text-gray-700 hover:text-blue-600">
                 {{ $link['label'] }}
@@ -132,7 +149,7 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
             const userBtnMobile = document.getElementById('user-button-mobile');
@@ -198,3 +215,9 @@
 </nav>
 
 
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+    class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50 transition-all duration-300"
+    aria-label="Contact via WhatsApp">
+    <img src="{{ asset('img/Wa.svg') }}" alt="Twitter" class="h-6 w-6 hover:opacity-80 transition">
+</a>
