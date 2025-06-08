@@ -42,6 +42,7 @@ class FacilityResource extends Resource
                     ->visibility('private')
                     ->directory('facilities')
                     ->image()
+                    ->required()
                     ->imagePreviewHeight('250')
                     ->maxSize(1024)
                     ->columnSpanFull(),

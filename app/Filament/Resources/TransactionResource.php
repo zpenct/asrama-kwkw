@@ -50,9 +50,9 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('booking.user.name')->label('Pemesan')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('uploaded_at')->label('Uploaded At')->dateTime('d M Y, H:i')->sortable(),
-                Tables\Columns\TextColumn::make('paid_at')->label('Confirmed At')->dateTime('d M Y, H:i')->sortable(),
+                Tables\Columns\TextColumn::make('verified_at')->label('Verified At')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('amount')->label('Total Transaksi')->sortable()->formatStateUsing(function ($state) {
-                    return 'Rp ' . number_format($state, 0, ',', '.');
+                    return 'Rp '.number_format($state, 0, ',', '.');
                 }),
                 Tables\Columns\TextColumn::make('status')->searchable(),
             ])
@@ -65,13 +65,13 @@ class TransactionResource extends Resource
                         'waiting_verification' => 'Menunggu Verifikasi',
                         'paid' => 'Dibayar',
                         'rejected' => 'Ditolak',
-                    ])->default(['waiting_verification', 'rejected']),
+                    ])->default(['waiting_verification']),
             ])
             ->actions([
                 Action::make('verifikasi')
                     ->label('Verifikasi')
                     ->icon('heroicon-o-check-circle')
-                    ->visible(fn($record) => $record->status === 'waiting_verification')
+                    ->visible(fn ($record) => $record->status === 'waiting_verification')
                     ->modalHeading('Verifikasi Bukti Pembayaran')
                     ->form([
 
@@ -94,13 +94,14 @@ class TransactionResource extends Resource
                     ->action(function (array $data, $record) {
                         if ($data['action'] === 'accept') {
                             $record->status = 'paid';
-                            $record->paid_at = now();
+                            $record->verified_at = now();
                             $record->booking->update(['status' => 'booked']);
 
                             Mail::to($record->booking->user->email)->send(new TransactionAcceptedMail($record, $data['notes'] ?? null));
                         } else {
                             $record->status = 'rejected';
                             $record->booking->update(['status' => 'pending']);
+                            $record->verified_at = now();
                             Mail::to($record->booking->user->email)->send(new TransactionRejectedMail($record, $data['notes'] ?? null));
                         }
                         $record->save();

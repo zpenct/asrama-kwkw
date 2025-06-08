@@ -22,14 +22,14 @@ class Transaction extends Model
         'status',
         'payment_proof',
         'uploaded_at',
-        'paid_at',
+        'verified_at',
         'expired_at',
     ];
 
     protected $casts = [
         'expired_at' => 'datetime',
         'uploaded_at' => 'datetime',
-        'paid_at' => 'datetime',
+        'verified_at' => 'datetime',
     ];
 
     public function booking()
