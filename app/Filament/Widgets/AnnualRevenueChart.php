@@ -5,24 +5,24 @@ namespace App\Filament\Widgets;
 use App\Models\Transaction;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class AnnualRevenueChart extends ChartWidget
 {
     protected static ?string $heading = 'Grafik Pendapatan Tahunan';
+
     protected static ?int $sort = 2;
 
     public ?string $yearFilter = null;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
     {
         $selectedYear = $this->yearFilter ?? now()->year;
 
-        $data = Transaction::selectRaw('MONTH(paid_at) as month, SUM(amount) as total')
+        $data = Transaction::whereNotNull('verified_at')->selectRaw('MONTH(verified_at) as month, SUM(amount) as total')
             ->where('status', 'paid')
-            ->whereYear('paid_at', $selectedYear)
+            ->whereYear('verified_at', $selectedYear)
             ->groupBy('month')
             ->orderBy('month')
             ->get();
@@ -55,7 +55,7 @@ class AnnualRevenueChart extends ChartWidget
 
     protected function getFilters(): ?array
     {
-        $years = Transaction::selectRaw('DISTINCT YEAR(paid_at) as year')
+        $years = Transaction::whereNotNull('verified_at')->selectRaw('DISTINCT YEAR(verified_at) as year')
             ->orderByDesc('year')
             ->pluck('year', 'year')
             ->toArray();
