@@ -213,3 +213,11 @@
         });
     </script>
 </nav>
+
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+    class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50 transition-all duration-300"
+    aria-label="Contact via WhatsApp">
+    <img src="{{ asset('img/Wa.svg') }}" alt="Twitter" class="h-6 w-6 hover:opacity-80 transition">
+</a>
