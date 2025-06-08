@@ -33,6 +33,19 @@ class BookingController extends Controller
 
         $room = \App\Models\Room::with('floor')->findOrFail($validated['room_id']);
 
+        $building = $room->floor->building;
+
+        // Ambil gender user dan type gedung
+        $userGender = Auth::user()->gender; // "male" atau "female"
+        $buildingType = $building->type;    // "PUTRA" atau "PUTRI"
+
+        if (
+            ($userGender === 'male' && $buildingType === 'PUTRI') ||
+            ($userGender === 'female' && $buildingType === 'PUTRA')
+        ) {
+            return back()->with('error', 'Maaf, kamu tidak diperbolehkan booking gedung ini.');
+        }
+
         // Cek apakah user memilih untuk penuhi seluruh kamar
         $fullOccupancy = $request->boolean('full_occupancy');
 
