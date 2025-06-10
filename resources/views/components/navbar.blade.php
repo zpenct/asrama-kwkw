@@ -17,7 +17,7 @@
 </style>
 
 <nav id="main-navbar" class="sticky top-0 z-50 w-full border-b bg-white inter-base">
-    <div class="flex justify-between items-center lg:px-8 px-2 md:px-4 py-3">
+    <div class="max-w-screen-xl mx-auto flex justify-between items-center lg:px-8 md:px-8 px-4 py-4">
         <a href="{{ url('/') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="{{ asset('logo/pt-inovasi.png') }}" alt="Logo Asrama Teknik" class="h-12">
         </a>
