@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Konfirmasi Pembayaran Anda</title>
+    <title>Konfirmasi Pembayaran Anda - Unofficial sekedar tugas kuliah</title>
     <style>
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;

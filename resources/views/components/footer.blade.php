@@ -36,7 +36,7 @@
 
     <div class="order-2 md:order-none">
         <a href="{{ url('/') }}" class="text-3xl font-bold text-white mb-4 inline-block">
-            Asrama Teknik
+            Asrama Teknik - Unofficial ya ges pliss
         </a>
         <p class="text-sm text-gray-400 leading-relaxed mt-2">
             Tempat tinggal mahasiswa yang nyaman dan terjangkau, mendukung pengembangan akademik, sosial, dan organisasi di lingkungan Universitas Hasanuddin.

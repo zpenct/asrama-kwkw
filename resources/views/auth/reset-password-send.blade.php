@@ -17,7 +17,7 @@
             <img src="{{ asset('logo/pt-inovasi.png') }}" alt="Logo Asrama Teknik" class="h-24">
 
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">Reset Password Terkirim</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Reset Password Terkirim - Unofficial ya gess</h1>
         <p class="text-gray-600 text-sm mb-6">
             Kami telah mengirimkan link reset password ke email Anda.<br>
             Silakan cek kotak masuk Anda dan ikuti petunjuknya.

@@ -11,7 +11,7 @@
 <body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
 
     <div class="w-full max-w-md bg-white rounded-xl p-6">
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Reset Password</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Reset Password - Unofficial ya gess</h2>
 
         @if (session('status'))
             <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">

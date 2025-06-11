@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Pembayaran Anda Ditolak</title>
+    <title>Pembayaran Anda Ditolak - - Unofficial sekedar tugas kuliah</title>
     <style>
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;

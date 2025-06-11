@@ -47,7 +47,7 @@
 
                 <div class="divide-y rounded-lg mx-auto mt-10">
                     <div class="mb-8">
-                        <h2 class="text-xl font-bold text-slate-900">Frequently asked questions</h2>
+                        <h2 class="text-xl font-bold text-slate-900">Frequently asked questions - - Unofficial sekedar tugas kuliah</h2>
                     </div>
                     <div class="accordion" role="accordion">
                         <button type="button"

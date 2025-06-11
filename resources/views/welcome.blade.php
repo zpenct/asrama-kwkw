@@ -16,7 +16,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Ramtek - PT. Inovasi Benua Maritim')
+@section('title', 'Ramtek - PT. Inovasi Benua Maritim - Unofficial sekedar tugas kuliah')
 
 @section('meta')
     <meta name="description" content="Ramtek adalah sistem pemesanan kamar asrama teknik UNHAS yang cepat, transparan, dan berbasis online.">
@@ -67,7 +67,7 @@
                 <div class="relative z-20 mx-auto text-white md:grid md:grid-cols-2 justify-between gap-20">
                     <div class="flex flex-col justify-end">
                         <div class="flex flex-col gap-1 mb-8 max-md:text-center">
-                            <h3 class=" text-3xl inter-bold">Tinggal Nyaman, Belajar Tenang</h3>
+                            <h3 class=" text-3xl inter-bold">Tinggal Nyaman, Belajar Tenang (- Unofficial sekedar tugas kuliah ges)</h3>
                             <p class="inter-base text-lg opacity-80">Dapatkan Asrama impian kalian!!</p>
                         </div>
                         <div class="w-full grid grid-flow-col gap-2 bg-blue-500 p-2 rounded-lg">
@@ -154,6 +154,24 @@
                 <h2 class="text-3xl font-bold text-slate-900">Asrama Teknik & Cara Kerja</h2>
             </div>
             <div class="mx-auto border px-6 divide-y rounded-lg my-6">
+                <div class="accordion" role="accordion">
+                    <button type="button"
+                        class="toggle-button w-full text-base outline-none text-left font-semibold py-4 text-slate-900 hover:text-blue-600 flex items-center">
+                        <span class="mr-4">Apakah ini website resmi Asrama Unhas atau PT. Inovasi Benua Maritim?</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42"
+                            class="w-3 fill-current ml-auto shrink-0">
+                            <path class="plus"
+                                d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" />
+                            <path
+                                d="M37.059 16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5h32.118C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" />
+                        </svg>
+                    </button>
+                    <div class="content invisible max-h-0 overflow-hidden transition-all duration-300">
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            BUKAN-BUKAN-BUKAN WOY, segala hal yang tercantum disini merupakan hasil karangan kelompok kami untuk kebutuhna tugas mata kuliah RPL, berikut adalah website resmi dari PT. INovasi Benua Maritim https://inomarunhas.com/ 
+                        </p>
+                    </div>
+                </div>
                 <div class="accordion" role="accordion">
                     <button type="button"
                         class="toggle-button w-full text-base outline-none text-left font-semibold py-4 text-slate-900 hover:text-blue-600 flex items-center">

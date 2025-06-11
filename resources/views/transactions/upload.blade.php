@@ -6,16 +6,16 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div class="p-4 bg-yellow-50 border border-yellow-300 rounded-lg">
-                <h2 class="text-sm font-semibold text-yellow-900 mb-2">Instruksi Pembayaran</h2>
+                <h2 class="text-sm font-semibold text-yellow-900 mb-2">Instruksi Pembayaran - - Unofficial sekedar tugas kuliah GES</h2>
                 <p class="text-sm text-gray-700 mb-3">Silakan lakukan transfer ke rekening berikut:</p>
 
                 <div class="grid grid-cols-2 gap-y-2 text-sm text-gray-800">
                     <div class="font-medium">Nama Perusahaan</div>
-                    <div>PT. Inovasi Benua Maritim</div>
+                    <div>PT. Unofficial sekedar tugas kuliah</div>
 
                     <div class="font-medium">Nomor Rekening</div>
                     <div class="flex items-center gap-2">
-                        <span id="rekeningNumber">0007701300001159</span>
+                        <span id="rekeningNumber">999999999(Unofficial sekedar tugas kuliah)</span>
                         <button onclick="copyRekening()" class="text-blue-600 text-xs">Copy</button>
                     </div>
 
@@ -29,7 +29,7 @@
                 <hr class="my-4">
 
                 <p class="text-sm text-gray-700">
-                    Ada kendala atau pertanyaan? Hubungi kami via
+                    Ada kendala atau pertanyaan? Hubungi kami via - Unofficial sekedar tugas kuliah
                     <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
                         class="text-green-600 font-semibold hover:underline">WhatsApp</a>.
                 </p>
