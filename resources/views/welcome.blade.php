@@ -18,6 +18,43 @@
 
 @section('title', 'Ramtek - PT. Inovasi Benua Maritim')
 
+@section('meta')
+    <meta name="description" content="Ramtek adalah sistem pemesanan kamar asrama teknik UNHAS yang cepat, transparan, dan berbasis online.">
+    <meta name="keywords" content="ramtek, unhas, booking kamar, asrama teknik unhas, pemesanan asrama, booking, asrama, inovasi benua maritim, inomaru,">
+
+    <!-- OG Tags -->
+    <meta property="og:title" content="Ramtek - PT. Inovasi Benua Maritim">
+    <meta property="og:description" content="Booking kamar asrama teknik UNHAS dengan mudah dan cepat secara online.">
+    <meta property="og:image" content="{{ asset('img/pt-inovasi-og.jpg') }}">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ramtek - PT. Inovasi Benua Maritim">
+    <meta name="twitter:description" content="Booking kamar asrama teknik UNHAS secara online. Transparan dan efisien.">
+    <meta name="twitter:image" content="{{ asset('img/pt-inovasi-og.jpg') }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ url('/') }}" />
+
+    <!-- Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ramtek - PT. Inovasi Benua Maritim",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('img/pt-inovasi-2xx.png') }}",
+      "sameAs": [
+        "https://www.instagram.com/ramtek_unhas"
+      ],
+      "description": "Platform digital untuk pemesanan kamar asrama teknik Universitas Hasanuddin secara online."
+    }
+    </script>
+@endsection
+
+
 @section('content')
     <main class="min-h-screen w-full flex gap-4 flex-col">
         <div class="w-full content-center md:px-8 px-4 py-4">
