@@ -34,7 +34,6 @@
         </form>
     </div>
 
-    <!-- Kolom 2: Logo & Deskripsi (di kanan) -->
     <div class="order-2 md:order-none">
         <a href="{{ url('/') }}" class="text-3xl font-bold text-white mb-4 inline-block">
             Asrama Teknik
@@ -45,7 +44,6 @@
         </div>
     </div>
 
-    <!-- Bawah Footer: Copyright full width -->
     <div class="border-t border-gray-700 mt-10 pt-6 w-full">
         <div class="max-w-screen-xl mx-auto px-6 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p class="text-sm text-gray-400 text-center md:text-left w-full md:w-auto">

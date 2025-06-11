@@ -47,54 +47,56 @@
             </section>
         </div>
 
-        <section class="mx-auto max-w-screen-xl px-4 md:px-8 inter-base">
-            <div class="max-w-screen-xl inter-base text-3xl mb-5">
-                <h3 class="inter-bold text-3xl">Pilih Asrama</h3>
-                <p class="text-lg">Cari kamar impian kalian!</p>
-            </div>
-
-            <div class="max-w-80 grid grid-cols-3 rounded-sm overflow-hidden border border-gray-300 mb-3">
-                <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Semua</button>
-                <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Putra</button>
-                <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1">Putri</button>
-            </div>
-
-            <div>
-                <div class="grid grid-cols-2 md:grid-cols-3 md:mb-6 lg:grid-cols-4 gap-4 mt-3">
-                    @foreach ($buildings as $building)
-                        <div class="block dorm-card" data-type="{{ strtolower($building->type) }}">
-                            <div class="relative flex flex-col gap-4 bg-white rounded-2xl">
-                                <img src="{{ Storage::disk('s3')->url($building->image_url) }}" alt="{{ $building->name }}"
-                                    class="w-full h-44 object-cover rounded-xl">
-                                <div class="flex flex-col gap-3">
-                                    <div class="flex justify-between">
-                                        <div>
-                                            <h3 class="text-lg inter-bold semibold text-gray-900">
-                                                {{ $building->name }}
-                                            </h3>
-                                            <p class="flex items-start gap-1 inter-base font-light text-sm flex-col md:flex-row">
-                                                <span>Mulai dari</span>
-                                                <span class="text-red-600">
-                                                    Rp. {{ number_format($building->floors->min('price') ?? 0, 0, ',', '.') }}
-                                                </span>
-                                            </p>
+        <div class="w-full content-center md:px-8 px-4 py-4">
+            <section class="mx-auto max-w-screen-xl">
+                <div class="max-w-screen-xl inter-base text-3xl mb-5">
+                    <h3 class="inter-bold text-3xl">Pilih Asrama</h3>
+                    <p class="text-lg">Cari kamar impian kalian!</p>
+                </div>
+    
+                <div class="max-w-80 grid grid-cols-3 rounded-sm overflow-hidden border border-gray-300 mb-3">
+                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Semua</button>
+                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Putra</button>
+                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1">Putri</button>
+                </div>
+    
+                <div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 md:mb-6 lg:grid-cols-4 gap-4 mt-3">
+                        @foreach ($buildings as $building)
+                            <div class="block dorm-card" data-type="{{ strtolower($building->type) }}">
+                                <div class="relative flex flex-col gap-4 bg-white rounded-2xl">
+                                    <img src="{{ Storage::disk('s3')->url($building->image_url) }}" alt="{{ $building->name }}"
+                                        class="w-full h-44 object-cover rounded-xl">
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex justify-between">
+                                            <div>
+                                                <h3 class="text-lg inter-bold semibold text-gray-900">
+                                                    {{ $building->name }}
+                                                </h3>
+                                                <p class="flex items-start gap-1 inter-base font-light text-sm flex-col md:flex-row">
+                                                    <span>Mulai dari</span>
+                                                    <span class="text-red-600">
+                                                        Rp. {{ number_format($building->floors->min('price') ?? 0, 0, ',', '.') }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <p class="content-end text-sm">{{ ucfirst(strtolower($building->type)) }}</p>
                                         </div>
-                                        <p class="content-end text-sm">{{ ucfirst(strtolower($building->type)) }}</p>
+    
+                                        <hr class="border-gray-300">
+    
+                                        <a href="{{ route('buildings.show', $building->id) }}"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg text-center transition-all duration-300 ease-in-out">
+                                            Pilih Asrama
+                                        </a>
                                     </div>
-
-                                    <hr class="border-gray-300">
-
-                                    <a href="{{ route('buildings.show', $building->id) }}"
-                                        class="bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg text-center transition-all duration-300 ease-in-out">
-                                        Pilih Asrama
-                                    </a>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <div class="mx-auto max-w-screen-xl px-4 md:px-8">
             <div class="mb-8">
