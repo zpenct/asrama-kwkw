@@ -45,7 +45,36 @@ class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('expired_at')->dateTime('d M Y, H:i')->sortable(),
                 Tables\Columns\TextColumn::make('status')->searchable(),
-                Tables\Columns\TextColumn::make('transaction.status')->label('Status Pembayaran')->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'pending' => 'Pending',
+                        'expired' => 'Expired',
+                        'booked' => 'Booked',
+                        default => ucfirst($state),
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'expired' => 'danger',
+                        'booked' => 'success',
+                        default => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('transaction.status')->label('Status Pembayaran')->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'waiting_verification' => 'Menunggu Verifikasi',
+                        'paid' => 'Dibayar',
+                        'waiting_payment' => 'Menunggu Pembayaran',
+                        'rejected' => 'Ditolak',
+                        default => ucfirst($state ?? '-'),
+                    })
+                    ->color(fn (?string $state): string => match ($state) {
+                        'waiting_verification' => 'warning',
+                        'waiting_payment' => 'gray',
+                        'paid' => 'success',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })->searchable(),
             ])->defaultSort('updated_at', 'desc')
             ->filters([
                 SelectFilter::make('status')
@@ -55,7 +84,7 @@ class BookingResource extends Resource
                         'pending' => 'Pending',
                         'expired' => 'Expired',
                         'booked' => 'Booked',
-                    ])->default(['pending', 'booked']),
+                    ])->default(['pending']),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

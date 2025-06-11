@@ -54,7 +54,21 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('amount')->label('Total Transaksi')->sortable()->formatStateUsing(function ($state) {
                     return 'Rp '.number_format($state, 0, ',', '.');
                 }),
-                Tables\Columns\TextColumn::make('status')->searchable(),
+                Tables\Columns\TextColumn::make('status')->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'waiting_verification' => 'Menunggu Verifikasi',
+                        'waiting_payment' => 'Menunggu Pembayaran',
+                        'paid' => 'Dibayar',
+                        'rejected' => 'Ditolak',
+                        default => ucfirst($state),
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'waiting_verification' => 'warning', // kuning/oranye
+                        'paid' => 'success', // hijau
+                        'waiting_payment' => 'gray',
+                        'rejected' => 'danger', // merah
+                        default => 'gray',
+                    })->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')
             ->filters([
@@ -63,6 +77,7 @@ class TransactionResource extends Resource
                     ->multiple()
                     ->options([
                         'waiting_verification' => 'Menunggu Verifikasi',
+                        'waiting_payment' => 'Menunggu Pembayaran',
                         'paid' => 'Dibayar',
                         'rejected' => 'Ditolak',
                     ])->default(['waiting_verification']),

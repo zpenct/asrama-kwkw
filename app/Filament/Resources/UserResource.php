@@ -69,7 +69,14 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nama user')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role user')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
-                Tables\Columns\TextColumn::make('gender')->label('Gender'),
+                Tables\Columns\TextColumn::make('gender')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'male' => 'info',
+                        'female' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)),
                 Tables\Columns\CheckboxColumn::make('is_first')->label('Belum Reset Password')->disabled(),
             ])
             ->filters([
