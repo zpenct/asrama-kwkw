@@ -19,9 +19,9 @@ class BuildingResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Logistik';
 
-    protected static ?string $navigationLabel  = 'Gedung';
-    
-    protected static ?string $pluralModelLabel   = 'Gedung';
+    protected static ?string $navigationLabel = 'Gedung';
+
+    protected static ?string $pluralModelLabel = 'Gedung';
 
     public static function form(Form $form): Form
     {
@@ -145,7 +145,15 @@ class BuildingResource extends Resource
             ->striped()
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('name')->label('Nama Gedung')->searchable(),
-                \Filament\Tables\Columns\TextColumn::make('type')->label('Tipe')->searchable(),
+                \Filament\Tables\Columns\TextColumn::make('type')
+                    ->label('Tipe')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'PUTRA' => 'info',
+                        'PUTRI' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)),
                 \Filament\Tables\Columns\TextColumn::make('floors_count')->label('Jumlah Lantai')->counts('floors')->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->dateTime('d M Y, H:i')->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('rooms_count')->label('Jumlah kamar')->counts('rooms')->sortable(),
