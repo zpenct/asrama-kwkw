@@ -21,10 +21,12 @@
 @section('content')
     <main class="min-h-screen w-full flex gap-4 flex-col">
         <div class="w-full content-center md:px-8 px-4 py-4">
-            <section class="max-w-screen-xl mx-auto relative top-0 px-4 bg-cover bg-center bg-no-repeat max-md:pt-56 py-7 rounded-xl"
+            <section
+                class="max-w-screen-xl mx-auto relative top-0 px-4 bg-cover bg-center bg-no-repeat max-md:pt-56 py-7 rounded-xl"
                 style="background-image: url('{{ asset('img/hero1.jpg') }}');">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10 rounded-b-xl"></div>
-    
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10 rounded-b-xl">
+                </div>
+
                 <div class="relative z-20 mx-auto text-white md:grid md:grid-cols-2 justify-between gap-20">
                     <div class="flex flex-col justify-end">
                         <div class="flex flex-col gap-1 mb-8 max-md:text-center">
@@ -32,16 +34,22 @@
                             <p class="inter-base text-lg opacity-80">Dapatkan Asrama impian kalian!!</p>
                         </div>
                         <div class="w-full grid grid-flow-col gap-2 bg-blue-500 p-2 rounded-lg">
-                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Gratis Air</p>
-                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Gratis Listrik</p>
-                            <p class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">Keamanan</p>
+                            <p
+                                class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">
+                                Gratis Air</p>
+                            <p
+                                class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">
+                                Gratis Listrik</p>
+                            <p
+                                class="text-sm bg-white h-14 text-black font-medium flex items-center justify-center rounded">
+                                Keamanan</p>
                         </div>
                     </div>
                     <section class="max-md:hidden rounded-lg overflow-hidden">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1093.54833821619!2d119.49901959404765!3d-5.230314316694764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbee147fb76d7fd%3A0x88b0fffe0f90afee!2sRamsis%20FT%20Unhas%20Gowa!5e0!3m2!1sid!2sid!4v1748534726136!5m2!1sid!2sid"
-                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" class="mx-auto"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                            class="mx-auto" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </section>
                 </div>
             </section>
@@ -53,38 +61,44 @@
                     <h3 class="inter-bold text-3xl">Pilih Asrama</h3>
                     <p class="text-lg">Cari kamar impian kalian!</p>
                 </div>
-    
+
                 <div class="max-w-80 grid grid-cols-3 rounded-sm overflow-hidden border border-gray-300 mb-3">
-                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Semua</button>
-                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Putra</button>
-                    <button class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1">Putri</button>
+                    <button
+                        class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Semua</button>
+                    <button
+                        class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1 border-r border-gray-300">Putra</button>
+                    <button
+                        class="tab-button text-gray-700 hover:bg-blue-500 hover:text-white font-light transition-all duration-300 ease-in-out text-sm py-1">Putri</button>
                 </div>
-    
+
                 <div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 md:mb-6 lg:grid-cols-4 gap-4 mt-3">
+                    <div class="grid grid:cols-1 sm:grid-cols-2 md:grid-cols-3 md:mb-6 lg:grid-cols-4 gap-4 mt-3">
                         @foreach ($buildings as $building)
-                            <div class="block dorm-card" data-type="{{ strtolower($building->type) }}">
-                                <div class="relative flex flex-col gap-4 bg-white rounded-2xl">
-                                    <img src="{{ Storage::disk('s3')->url($building->image_url) }}" alt="{{ $building->name }}"
-                                        class="w-full h-44 object-cover rounded-xl">
+                            <div class="block dorm-card rounded-xl bg-white border p-4"
+                                data-type="{{ strtolower($building->type) }}">
+                                <div class="relative flex flex-col gap-4 bg-white rounded-lg">
+                                    <img src="{{ Storage::disk('s3')->url($building->image_url) }}"
+                                        alt="{{ $building->name }}" class="w-full h-44 object-cover rounded-xl">
                                     <div class="flex flex-col gap-3">
                                         <div class="flex justify-between">
                                             <div>
                                                 <h3 class="text-lg inter-bold semibold text-gray-900">
                                                     {{ $building->name }}
                                                 </h3>
-                                                <p class="flex items-start gap-1 inter-base font-light text-sm flex-col md:flex-row">
+                                                <p
+                                                    class="flex items-start gap-1 inter-base font-light text-sm flex-col md:flex-row">
                                                     <span>Mulai dari</span>
                                                     <span class="text-red-600">
-                                                        Rp. {{ number_format($building->floors->min('price') ?? 0, 0, ',', '.') }}
+                                                        Rp.
+                                                        {{ number_format($building->floors->min('price') ?? 0, 0, ',', '.') }}
                                                     </span>
                                                 </p>
                                             </div>
                                             <p class="content-end text-sm">{{ ucfirst(strtolower($building->type)) }}</p>
                                         </div>
-    
+
                                         <hr class="border-gray-300">
-    
+
                                         <a href="{{ route('buildings.show', $building->id) }}"
                                             class="bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg text-center transition-all duration-300 ease-in-out">
                                             Pilih Asrama
@@ -117,13 +131,20 @@
                     </button>
                     <div class="content invisible max-h-0 overflow-hidden transition-all duration-300">
                         <p class="text-sm text-slate-600 leading-relaxed">
-                            PT. Inovasi Benua Maritim (Inomar) merupakan perusahaan yang didirikan oleh Universitas Hasanuddin dan bergerak di berbagai bidang strategis, seperti otomotif, distribusi farmasi dan alat kesehatan, konstruksi, pemasaran dan perdagangan, serta pengelolaan apotek dan klinik pratama.
+                            PT. Inovasi Benua Maritim (Inomar) merupakan perusahaan yang didirikan oleh Universitas
+                            Hasanuddin dan bergerak di berbagai bidang strategis, seperti otomotif, distribusi farmasi dan
+                            alat kesehatan, konstruksi, pemasaran dan perdagangan, serta pengelolaan apotek dan klinik
+                            pratama.
                             <br>
-                            Salah satu wujud komitmen Universitas Hasanuddin dalam mendukung pengembangan mahasiswa adalah melalui penyediaan fasilitas Asrama Mahasiswa Fakultas Teknik (Ramtek). Ramtek membuka kesempatan bagi seluruh mahasiswa baru untuk bergabung sebagai warga asrama. Asrama ini tidak hanya menjadi tempat tinggal yang nyaman dan terjangkau, tetapi juga menawarkan lingkungan yang kondusif bagi pengembangan potensi akademik, sosial, dan organisasi mahasiswa.
+                            Salah satu wujud komitmen Universitas Hasanuddin dalam mendukung pengembangan mahasiswa adalah
+                            melalui penyediaan fasilitas Asrama Mahasiswa Fakultas Teknik (Ramtek). Ramtek membuka
+                            kesempatan bagi seluruh mahasiswa baru untuk bergabung sebagai warga asrama. Asrama ini tidak
+                            hanya menjadi tempat tinggal yang nyaman dan terjangkau, tetapi juga menawarkan lingkungan yang
+                            kondusif bagi pengembangan potensi akademik, sosial, dan organisasi mahasiswa.
                         </p>
                     </div>
                 </div>
-    
+
                 <div class="accordion" role="accordion">
                     <button type="button"
                         class="toggle-button w-full text-base outline-none text-left font-semibold py-4 text-slate-900 hover:text-blue-600 flex items-center">
@@ -146,11 +167,12 @@
                             <li>Lakukan proses <i>checkout</i> pada sistem.</li>
                             <li>Setelah <i>checkout</i>, kirimkan bukti pembayaran.</li>
                             <li>Tunggu hingga admin/staff menyetujui permintaan booking Anda.</li>
-                            <li>Setelah booking disetujui, mahasiswa dapat langsung menghubungi staff untuk informasi lebih lanjut.</li>
+                            <li>Setelah booking disetujui, mahasiswa dapat langsung menghubungi staff untuk informasi lebih
+                                lanjut.</li>
                         </ol>
                     </div>
                 </div>
-    
+
                 <div class="accordion" role="accordion">
                     <button type="button"
                         class="toggle-button w-full text-base outline-none text-left font-semibold py-4 text-slate-900 hover:text-blue-600 flex items-center">
@@ -165,11 +187,13 @@
                     </button>
                     <div class="content invisible max-h-0 overflow-hidden transition-all duration-300">
                         <p class="text-sm text-slate-600 leading-relaxed">
-                            Setelah booking Anda disetujui, silakan menghubungi admin atau staff untuk pengambilan kunci asrama saat sudah mendekati tanggal check-in. Alternatifnya, Anda juga dapat langsung datang ke Asrama Teknik Unhas untuk mengambil kunci secara langsung pada jam kantor.
+                            Setelah booking Anda disetujui, silakan menghubungi admin atau staff untuk pengambilan kunci
+                            asrama saat sudah mendekati tanggal check-in. Alternatifnya, Anda juga dapat langsung datang ke
+                            Asrama Teknik Unhas untuk mengambil kunci secara langsung pada jam kantor.
                         </p>
                     </div>
                 </div>
-    
+
                 <div class="accordion" role="accordion">
                     <button type="button"
                         class="toggle-button w-full text-base outline-none text-left font-semibold py-4 text-slate-900 hover:text-blue-600 flex items-center">
@@ -184,7 +208,9 @@
                     </button>
                     <div class="content invisible max-h-0 overflow-hidden transition-all duration-300">
                         <p class="text-sm text-slate-600 leading-relaxed">
-                            Anda dapat menghubungi staff asrama melalui nomor kontak yang tertera di bagian bawah website. Selain itu, Anda juga dapat langsung mendatangi kantor Asrama Teknik yang lokasinya dapat dilihat pada peta di atas.
+                            Anda dapat menghubungi staff asrama melalui nomor kontak yang tertera di bagian bawah website.
+                            Selain itu, Anda juga dapat langsung mendatangi kantor Asrama Teknik yang lokasinya dapat
+                            dilihat pada peta di atas.
                         </p>
                     </div>
                 </div>
@@ -219,7 +245,7 @@
         });
 
         document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const selected = this.textContent.trim().toLowerCase();
                 const cards = document.querySelectorAll('.dorm-card');
 
