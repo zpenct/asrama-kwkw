@@ -290,7 +290,7 @@
         <div class="relative bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
             <!-- Header Modal -->
             <div class="flex items-center justify-between p-4 border-b">
-                <h3 class="text-lg font-semibold text-gray-900">Preview Gambar Lantai</h3>
+                <h3 class="text-lg font-semibold text-gray-900">Preview Gambar Kamar</h3>
                 <button onclick="closeModal()"
                     class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
