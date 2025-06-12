@@ -141,7 +141,7 @@
         </div>
         <div class="md:row-span-5 md:col-start-3">
             <div class="mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <h2 class="text-2xl font-bold tracking-tight text-gray-900">Booking Details</h2>
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900">Booking Details - Unofficial</h2>
 
                 <div class="space-y-3 mb-6 mt-12">
                     <div class="flex justify-between">

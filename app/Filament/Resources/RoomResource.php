@@ -24,9 +24,9 @@ class RoomResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Logistik';
 
-    protected static ?string $navigationLabel  = 'Kamar';
-    
-    protected static ?string $pluralModelLabel   = 'Kamar';
+    protected static ?string $navigationLabel = 'Kamar';
+
+    protected static ?string $pluralModelLabel = 'Kamar';
 
     public static function form(Form $form): Form
     {
@@ -98,17 +98,20 @@ class RoomResource extends Resource
                                     ->label('Kapasitas Maksimum/Kamar')
                                     ->integer()
                                     ->minValue(1)
+                                    ->default(1)
                                     ->required(),
                                 Forms\Components\TextInput::make('price')
                                     ->label('Harga per Kamar/Tahun/Orang')
                                     ->prefix('Rp')
                                     ->numeric()
                                     ->minValue(0)
+                                    ->default(0)
                                     ->required()
                                     ->step(0.01),
                                 Forms\Components\FileUpload::make('image_url')
                                     ->label('Gambar Lantai')
                                     ->disk('s3')
+                                    ->required()
                                     ->visibility('public')
                                     ->directory('floors')
                                     ->image()
