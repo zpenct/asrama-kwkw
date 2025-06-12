@@ -166,10 +166,22 @@
                     @foreach ($floors as $floor)
                         <div class="mb-6">
                             <h3 class="text-lg font-semibold text-gray-900">Floor {{ $floor->floor }}</h3>
-                            <div class="flex gap-2 text-sm text-gray-500">
+                            <div class="flex gap-2 text-sm text-gray-500 items-center">
                                 <p>Max Capacity: {{ $floor->max_capacity }}</p>
                                 <p>Price: Rp{{ number_format($floor->price, 2) }} / year / person</p>
+
+                                @if (!empty($floor->image_url))
+                                    <button type="button"
+                                        onclick="openModal('{{ Storage::disk('s3')->url($floor->image_url) }}')"
+                                        class="mt-2 inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm rounded-lg transition">
+                                        Preview Kamar
+                                    </button>
+                                @endif
+
+
                             </div>
+
+
 
                             <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
                                 @foreach ($floor->rooms as $room)
@@ -272,10 +284,58 @@
             @endif
         </div>
     </div>
+
+
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black bg-opacity-75 flex hidden items-center justify-center p-4">
+        <div class="relative bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <!-- Header Modal -->
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="text-lg font-semibold text-gray-900">Preview Gambar Lantai</h3>
+                <button onclick="closeModal()"
+                    class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body Modal dengan Gambar -->
+            <div class="p-4 flex items-center justify-center bg-gray-50 min-h-[300px]">
+                <img id="modalImage" src="" alt="Preview Gambar Floor"
+                    class="max-w-full max-h-[60vh] object-contain rounded-lg shadow-sm">
+            </div>
+        </div>
+    </div>
+
+
+
 @endsection
 
 @section('scripts')
     <script>
+        function openModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+
+            modalImage.src = imageUrl;
+
+            // Tampilkan modal dan gambar
+            modal.classList.remove('hidden');
+            modalImage.classList.remove('hidden'); // Pastikan gambar tidak tersembunyi
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
         document.addEventListener("DOMContentLoaded", function() {
             const checkinInput = document.getElementById("checkin_date");
             const lamaInapSelect = document.getElementById("lama_inap");
@@ -335,6 +395,8 @@
                     }
                 });
             });
+
+
 
         });
     </script>
