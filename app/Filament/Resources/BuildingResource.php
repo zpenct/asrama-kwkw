@@ -108,11 +108,14 @@ class BuildingResource extends Resource
                                         ->label('Kapasitas Maksimum')
                                         ->numeric()
                                         ->required()
-                                        ->default(0),
+                                        ->minValue(1)
+                                        ->default(1),
                                     Forms\Components\TextInput::make('price')
                                         ->label('Harga per Tahun')
                                         ->numeric()
                                         ->required()
+                                        ->minValue(0)
+                                        ->default(1)
                                         ->default(0),
                                     Forms\Components\FileUpload::make('image_url')
                                         ->label('Gambar Kamar pada lantai ini')
