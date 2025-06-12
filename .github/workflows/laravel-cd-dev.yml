@@ -1,0 +1,71 @@
+name: CD to EC2 
+
+on:
+  push:
+    branches:
+      - development
+
+  workflow_dispatch: 
+    inputs:
+      reason:
+        description: 'Alasan deploy (opsional)'
+        required: false
+        default: 'Manual deploy via GitHub UI'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, bcmath, xml, curl, mysql
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "📦 Alasan deploy: ${{ github.event.inputs.reason || 'Auto deploy by push' }}"
+
+            echo "🎯 Masuk ke direktori proyek"
+            cd /var/www/myapp
+
+            echo "Tandai direktori Git sebagai aman"
+            git config --global --add safe.directory /var/www/myapp
+
+            echo "Reset dan pull chages"
+            git reset --hard
+            git clean -fd
+            git pull origin development
+
+            echo "Install Composer dependencies"
+            composer install --no-dev --prefer-dist --no-progress
+
+            echo "Build frontend (Vite)"
+            npm ci
+            npm run build
+
+            echo "Artisan commands"
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan storage:link || true
+            php artisan optimize
+
+            # echo "Perbaiki permission (tidak mengganggu cron/supervisor)"
+            # sudo chown -R ubuntu:laravel .
+            # sudo find storage -type d -exec chmod 2775 {} \;
+            # sudo find bootstrap/cache -type d -exec chmod 2775 {} \;
+            # sudo find storage -type f -exec chmod 664 {} \;
+            # sudo find bootstrap/cache -type f -exec chmod 664 {} \;
+
+            echo "✅ Selesai deploy"
