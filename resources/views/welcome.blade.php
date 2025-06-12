@@ -67,7 +67,7 @@
                 <div class="relative z-20 mx-auto text-white md:grid md:grid-cols-2 justify-between gap-20">
                     <div class="flex flex-col justify-end">
                         <div class="flex flex-col gap-1 mb-8 max-md:text-center">
-                            <h3 class=" text-3xl inter-bold">Tinggal Nyaman, Belajar Tenang (- Unofficial sekedar tugas kuliah ges)</h3>
+                            <h3 class=" text-3xl inter-bold">Tinggal Nyaman, Belajar Tenang ( Unofficial sekedar tugas kuliah ges)</h3>
                             <p class="inter-base text-lg opacity-80">Dapatkan Asrama impian kalian!!</p>
                         </div>
                         <div class="w-full grid grid-flow-col gap-2 bg-blue-500 p-2 rounded-lg">
