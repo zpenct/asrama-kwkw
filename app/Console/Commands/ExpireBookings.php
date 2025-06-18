@@ -32,6 +32,13 @@ class ExpireBookings extends Command
 
         $expired = Booking::where('status', 'pending')
             ->where('expired_at', '<', now())
+            ->where(function ($query) {
+                $query->whereDoesntHave('transaction') // tidak punya transaksi
+                    ->orWhereHas('transaction', function ($subQuery) {
+                        $subQuery->whereNull('status')
+                            ->orWhere('status', 'waiting_payment');
+                    });
+            })
             ->update(['status' => 'expired']);
 
         Log::info("[ExpireBookings] Total bookings expired: {$expired}");
