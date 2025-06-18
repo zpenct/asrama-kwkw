@@ -19,10 +19,19 @@ class SyncUsersJob implements ShouldQueue
 
     public function handle()
     {
+        logger()->info('[SyncUsersJob] Mulai mengambil data dari master_db...');
+
+        // Ambil semua email yang sudah ada di tabel users
+        $existingEmails = User::pluck('email')->toArray();
+
+        // Ambil hanya mahasiswa aktif yang belum ada di users
         $students = DB::connection('master_db')
             ->table('students')
             ->where('status', 'active')
+            ->whereNotIn('email_student', $existingEmails)
             ->get();
+
+        logger()->info('[SyncUsersJob] Total mahasiswa aktif yang belum disinkron: '.$students->count());
 
         foreach ($students as $student) {
             $user = User::updateOrCreate(
@@ -35,14 +44,15 @@ class SyncUsersJob implements ShouldQueue
                 ]
             );
 
-            // Assign Role using Spatie
             $role = Role::firstOrCreate(['name' => 'user']);
             $user->assignRole($role);
 
-            logger()->info('CHECK For:', [
-                'student' => $user,
+            logger()->info('[SyncUsersJob] User sinkron:', [
+                'email' => $user->email,
+                'id' => $user->id,
             ]);
-
         }
+
+        logger()->info('[SyncUsersJob] Sinkronisasi selesai.');
     }
 }
